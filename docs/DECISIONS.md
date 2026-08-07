@@ -291,11 +291,43 @@ abierto documentado, no resuelto con una suposición.**
 
 ---
 
-## Pendiente de registrar (próximas fases)
+## FASE 9 — Documentación
 
-- Fase 9: README, checklist de mantenimiento, guía de reutilización de la plantilla.
+**D32. Workflow de GitHub Actions completado (pendiente desde la
+Fase 3), usando `npm ci` + `npx eleventy` + `actions/deploy-pages`.**
 
-## Pendientes NO resueltos por diseño (requieren decisión humana)
+- Por qué: `npm ci` en vez de `npm install` en CI — instala exactamente
+  `package-lock.json`, sin riesgo de que un build automático actualice
+  una dependencia sin que nadie lo revise.
+
+**D33. `README.md` separado de `DECISIONS.md`, con roles explícitamente
+distintos: README = cómo usar; DECISIONS.md = por qué se construyó así.**
+
+- Por qué: mezclar ambos en un solo documento obliga a elegir entre un
+  README inflado de justificaciones técnicas (malo para alguien que solo
+  quiere agregar un lanzamiento) o un spec pobre en contexto (malo para
+  reutilizar la metodología en otro proyecto).
+
+**D34. Scripts npm (`dev`, `build`, `clean`) agregados a `package.json`.**
+
+- Por qué: convención estándar que cualquier desarrollador espera
+  encontrar; documentados en el README para que el flujo de trabajo diario
+  no dependa de recordar `npx eleventy` de memoria.
+
+---
+
+## PROYECTO CERRADO
+
+Las 9 fases están completas y verificadas con builds reales en cada paso
+(incluyendo errores genuinos que aparecieron y se corrigieron en el
+camino: sintaxis Liquid en Nunjucks, exports de plugin RSS v3, filtros
+RSS renombrados, lazy-loading aplicado incorrectamente a una imagen LCP).
+
+Pendientes que quedan explícitamente para vos, no resueltos por
+suposición (ver también el cierre de la Fase 8): completar los datos
+reales en `_data/site.json`, reemplazar los assets de imagen
+placeholder, conectar el newsletter a un proveedor real, y decidir la
+estrategia de imágenes responsive según el CDN que elijas.
 
 - `srcset`/imágenes responsive: depende del CDN de imágenes a elegir.
 - Reemplazar `og-default.jpg`, favicon e íconos por diseño final de marca.
