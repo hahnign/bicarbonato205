@@ -8,7 +8,7 @@ layout: layouts/base.njk
   <h1 class="page-hero__title">{{ title }}</h1>
   <p class="card__meta">{{ date | formatDate }}</p>
 
-  {% if cover %}<img src="{{ cover }}" alt="{{ title }}">{% endif %}
+  {% if cover %}<img src="{{ cover }}" alt="{{ title }}" decoding="async">{% endif %}
 
   <div class="detail__body">{{ content | safe }}</div>
 

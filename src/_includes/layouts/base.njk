@@ -6,9 +6,53 @@
 
   <title>{% if title %}{{ title }} — {% endif %}{{ site.name }}</title>
   <meta name="description" content="{{ description or site.description }}">
+  <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}">
 
-  <!-- Los metatags de Open Graph / Twitter Cards completos se agregan
-       en la Fase 8 (SEO). Este layout deja el punto de extensión listo. -->
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{% if title %}{{ title }} — {% endif %}{{ site.name }}">
+  <meta property="og:description" content="{{ description or site.description }}">
+  <meta property="og:image" content="{{ (cover or '/assets/img/og-default.jpg') | absoluteUrl(site.url) }}">
+  <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if title %}{{ title }} — {% endif %}{{ site.name }}">
+  <meta name="twitter:description" content="{{ description or site.description }}">
+  <meta name="twitter:image" content="{{ (cover or '/assets/img/og-default.jpg') | absoluteUrl(site.url) }}">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
+    "description": "{{ site.description }}",
+    "sameAs": [
+      "{{ site.streaming.spotify }}",
+      "{{ site.streaming.bandcamp }}",
+      "{{ site.streaming.youtube }}",
+      "{{ site.social.instagram }}"
+    ]
+  }
+  </script>
+
+  <!-- Favicons / manifest -->
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0A0A0A">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="/feed.xml">
+
+  <!-- Tipografía: preconnect acelera la conexión antes de necesitar el
+       recurso; font-display=swap evita texto invisible mientras carga -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/base.css">
@@ -16,9 +60,11 @@
 </head>
 <body>
 
+  <a href="#contenido" class="skip-link">Saltar al contenido</a>
+
   {% include "partials/header.njk" %}
 
-  <main>
+  <main id="contenido">
     {{ content | safe }}
   </main>
 

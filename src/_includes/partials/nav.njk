@@ -1,18 +1,14 @@
 {#
   Navegación principal. 7 ítems por decisión explícita (ver DECISIONS.md,
-  Fase 6): Contacto y Newsletter no compiten por espacio acá, viven en
-  el footer. "Streaming" siempre visible por definición de la Fase 1.
-
-  page.url es una variable que Eleventy inyecta automáticamente en cada
-  plantilla con la URL de la página actual — la usamos para marcar el
-  link activo sin tener que hacerlo a mano en cada página.
+  Fase 6). aria-current="page" comunica el link activo a lectores de
+  pantalla; is-active es solo la clase visual para el estilo CSS.
 #}
 <nav class="site-nav">
-  <a href="/" class="site-nav__link {% if page.url == '/' %}is-active{% endif %}">Inicio</a>
-  <a href="/archivo/" class="site-nav__link {% if page.url == '/archivo/' %}is-active{% endif %}">Archivo</a>
-  <a href="/lanzamientos/" class="site-nav__link {% if page.url == '/lanzamientos/' %}is-active{% endif %}">Lanzamientos</a>
-  <a href="/videos/" class="site-nav__link {% if page.url == '/videos/' %}is-active{% endif %}">Videos</a>
-  <a href="/playlists/" class="site-nav__link {% if page.url == '/playlists/' %}is-active{% endif %}">Playlists</a>
-  <a href="/streaming/" class="site-nav__link {% if page.url == '/streaming/' %}is-active{% endif %}">Streaming</a>
-  <a href="/acerca/" class="site-nav__link {% if page.url == '/acerca/' %}is-active{% endif %}">Acerca</a>
+  <a href="/" class="site-nav__link {% if page.url == '/' %}is-active{% endif %}" {% if page.url == '/' %}aria-current="page"{% endif %}>Inicio</a>
+  <a href="/archivo/" class="site-nav__link {% if page.url == '/archivo/' %}is-active{% endif %}" {% if page.url == '/archivo/' %}aria-current="page"{% endif %}>Archivo</a>
+  <a href="/lanzamientos/" class="site-nav__link {% if page.url == '/lanzamientos/' %}is-active{% endif %}" {% if page.url == '/lanzamientos/' %}aria-current="page"{% endif %}>Lanzamientos</a>
+  <a href="/videos/" class="site-nav__link {% if page.url == '/videos/' %}is-active{% endif %}" {% if page.url == '/videos/' %}aria-current="page"{% endif %}>Videos</a>
+  <a href="/playlists/" class="site-nav__link {% if page.url == '/playlists/' %}is-active{% endif %}" {% if page.url == '/playlists/' %}aria-current="page"{% endif %}>Playlists</a>
+  <a href="/streaming/" class="site-nav__link {% if page.url == '/streaming/' %}is-active{% endif %}" {% if page.url == '/streaming/' %}aria-current="page"{% endif %}>Streaming</a>
+  <a href="/acerca/" class="site-nav__link {% if page.url == '/acerca/' %}is-active{% endif %}" {% if page.url == '/acerca/' %}aria-current="page"{% endif %}>Acerca</a>
 </nav>

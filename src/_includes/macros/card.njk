@@ -1,14 +1,20 @@
 {#
   Macro: card
-  Uso: {{ card(title, url, meta, description, categoryLabel, categoryClass) }}
+  Uso: {{ card(title, url, meta, description, categoryLabel, categoryClass, cover) }}
 
   categoryClass corresponde a una clase CSS definida en components.css
   (card__tag--lanzamiento, card__tag--video, card__tag--playlist,
   card__tag--noticia), cada una mapeada a su color de --color-cat-*
   definido en tokens.css (Fase 4).
+
+  cover es opcional: si se pasa, la imagen se carga con loading="lazy"
+  y decoding="async" (Fase 8) para no bloquear el render de la grilla.
 #}
-{% macro card(title, url, meta, description, categoryLabel, categoryClass) %}
+{% macro card(title, url, meta, description, categoryLabel, categoryClass, cover) %}
 <article class="card">
+  {% if cover %}
+    <img src="{{ cover }}" alt="" loading="lazy" decoding="async" class="card__cover">
+  {% endif %}
   {% if categoryLabel %}
     <span class="card__tag {{ categoryClass }}">{{ categoryLabel }}</span>
   {% endif %}
