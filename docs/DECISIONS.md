@@ -192,8 +192,56 @@ contenido se define recién en la Fase 7.**
 
 ---
 
+## FASE 7 — Contenido
+
+**D21. Modelo de datos fijo por tipo de contenido (tabla en el chat de
+la Fase 7), incluyendo un cuarto tipo nuevo: Noticia.**
+
+- Por qué: evita `{% if %}` defensivos en las plantillas por campos que
+  a veces existen y a veces no.
+
+**D22. Layouts de detalle propios por tipo (`release.njk`, `video.njk`,
+`playlist.njk`, `noticia.njk`), en vez de renderizar el Markdown crudo
+sobre `layouts/base.njk` directamente (como quedó, de forma temporal,
+en la Fase 5).**
+
+- Por qué: layout chaining de Eleventy — cada layout de detalle tiene su
+  propio `layout: layouts/base.njk` en el front matter, así se anida
+  dentro del layout general sin duplicar `<html>/<head>`.
+
+**D23. Cinco filtros custom (`limit`, `excerpt`, `siblingItem`,
+`relatedItems`, `groupByYear`) en vez de resolver esa lógica dentro de
+las plantillas Nunjucks.**
+
+- Por qué: Nunjucks no tiene forma nativa de buscar el índice de un
+  ítem en un array o de agrupar por año; hacerlo en la plantilla la
+  volvería ilegible. La lógica de datos vive en `.eleventy.js`, la
+  plantilla solo la consume.
+
+\*\*D24. Búsqueda client-side vía JSON estático (`search-index.11ty.js`)
+
+- JS vainilla, sin librería de búsqueda ni servicio externo.\*\*
+
+* Por qué: el volumen de contenido esperado (pocas decenas de items) no
+  justifica una librería de indexado; un `fetch` + `filter` por substring
+  alcanza y no agrega peso ni dependencias.
+* Alternativa descartada: Algolia/Lunr.js — sobre-ingeniería para este
+  volumen de contenido.
+
+**D25. RSS con el plugin oficial `@11ty/eleventy-plugin-rss`, no XML
+escrito a mano.**
+
+- Por qué: RSS exige formato de fecha RFC-822 y URLs absolutas; el
+  plugin ya lo resuelve correctamente. Nota técnica real: la v3 del
+  plugin cambió su forma de exportar (named exports en vez de default)
+  y renombró `rssLastUpdatedDate` → `getNewestCollectionItemDate |
+dateToRfc822` — ambos errores aparecieron y se corrigieron durante
+  la verificación con build real en esta fase.
+
+---
+
 ## Pendiente de registrar (próximas fases)
 
-- Fase 7: modelo de datos de contenido (front matter completo), filtros, relacionados, búsqueda, RSS.
+- Fase 8: SEO, performance, accesibilidad.
 - Fase 7: modelo de datos de contenido (front matter de Markdown, colecciones, filtros).
 - Fase 8: decisiones de SEO, performance y accesibilidad.
