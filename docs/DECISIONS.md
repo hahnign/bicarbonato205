@@ -316,6 +316,27 @@ distintos: README = cómo usar; DECISIONS.md = por qué se construyó así.**
 
 ---
 
+## FASE 9 (adenda) — Bug real de deploy encontrado post-cierre
+
+**D35. Bug: el primer deploy falló porque GitHub Pages corrió Jekyll
+automáticamente sobre el código fuente, en vez de usar `deploy.yml`.**
+
+- Síntoma: el job "build" del workflow pasaba en verde, pero el deploy
+  fallaba con `Error: Liquid syntax error ... Unknown tag 'from'` —
+  Jekyll (motor de Pages por defecto) intentando parsear
+  `{% from "macros/card.njk" import card %}` (sintaxis Nunjucks) como
+  si fuera Liquid.
+- Causa raíz: **Settings → Pages → Source** seguía en `Deploy from a
+branch` en vez de `GitHub Actions`. Con esa fuente, Pages ignora el
+  workflow custom y procesa la rama directamente con su pipeline Jekyll
+  automático.
+- Fix: cambiar Source a `GitHub Actions` en la configuración del repo
+  (no requiere cambio de código).
+- **D36. Se agregó `src/.nojekyll`** (passthrough copy a la raíz de
+  `_site/`) como capa de seguridad adicional, independiente del fix de
+  Source — evita que este mismo problema reaparezca si la configuración
+  de Pages se resetea por error en el futuro.
+
 ## PROYECTO CERRADO
 
 Las 9 fases están completas y verificadas con builds reales en cada paso
