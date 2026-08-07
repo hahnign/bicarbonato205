@@ -148,8 +148,52 @@ colecciones manualmente en `.eleventy.js`.**
 
 ---
 
+## FASE 6 — Desarrollo del sitio
+
+**D16. Navegación principal con 7 ítems, no 9. Contacto y Newsletter no
+están en el nav.**
+
+- Por qué: el brief pide explícitamente "menú extremadamente simple";
+  Contacto va al footer (patrón estándar para info de baja frecuencia de
+  uso) y Newsletter se resuelve como sección de footer, no como página,
+  siguiendo el propio mockup aprobado.
+- Alternativas descartadas: los 9 ítems originales del sitemap en el nav
+  (contradice la simplicidad pedida en el propio brief).
+
+**D17. Colección custom `archivo` (vía `addCollection` en `.eleventy.js`)
+que combina lanzamiento + video + playlist ordenados por fecha.**
+
+- Por qué: ninguna colección automática por tag combina múltiples tags en
+  una sola línea de tiempo; se necesita lógica explícita.
+- Verificado con build real: la página `/archivo/` muestra los 3 tipos de
+  contenido de ejemplo intercalados correctamente.
+
+**D18. Macro de Nunjucks (`macros/card.njk`) para la tarjeta de
+contenido, reutilizada en Inicio, Archivo, Lanzamientos, Videos y
+Playlists.**
+
+- Por qué: es el componente que más se repite en el sitio; una macro con
+  parámetros evita duplicar el mismo bloque de HTML cinco veces.
+
+**D19. `components.css` separado de `base.css`.**
+
+- Por qué: `base.css` mantiene el reset y estilos elementales; los estilos
+  de cada componente (nav, cards, badges, botones, forms, footer) crecen
+  con cada fase nueva y necesitan su propio archivo para no volver
+  inmanejable `base.css`.
+
+**D20. Colecciones mínimas de `video` y `playlist` creadas ya en esta
+fase (con un archivo de ejemplo cada una), aunque el sistema completo de
+contenido se define recién en la Fase 7.**
+
+- Por qué: sin datos reales las páginas de Videos y Playlists no podían
+  verificarse visualmente; se prioriza tener el shell funcionando de
+  punta a punta sobre completar el modelo de datos antes de tiempo.
+
+---
+
 ## Pendiente de registrar (próximas fases)
 
-- Fase 6: decisiones de construcción de páginas.
+- Fase 7: modelo de datos de contenido (front matter completo), filtros, relacionados, búsqueda, RSS.
 - Fase 7: modelo de datos de contenido (front matter de Markdown, colecciones, filtros).
 - Fase 8: decisiones de SEO, performance y accesibilidad.
