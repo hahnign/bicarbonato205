@@ -1,0 +1,60 @@
+name: Publicar en GitHub Pages
+
+# Se ejecuta automáticamente en cada push a main. También se puede
+# disparar manualmente desde la pestaña "Actions" de GitHub
+# (workflow_dispatch), útil si querés forzar una republicación sin
+# hacer un commit nuevo.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permisos mínimos necesarios: leer el repo, escribir el sitio publicado,
+# y verificar la identidad del workflow ante GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita que dos publicaciones corran en paralelo y pisen el resultado.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+        # npm ci (no npm install): instala exactamente las versiones de
+        # package-lock.json, sin margen de actualizar nada por accidente
+        # durante un build automático. Es la práctica estándar en CI.
+
+      - name: Construir el sitio con Eleventy
+        run: npx eleventy
+
+      - name: Preparar el resultado para publicar
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
