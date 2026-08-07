@@ -19,6 +19,22 @@
 
 .site-header__top {
   padding: var(--space-6);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.site-header__search {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.site-header__search:hover {
+  color: var(--color-accent);
 }
 
 .site-header__logo {
@@ -153,6 +169,18 @@
 
 .newsletter-form input::placeholder {
   color: var(--color-text-faint);
+}
+
+#search-input {
+  width: 100%;
+  max-width: 480px;
+  margin-top: var(--space-6);
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
 }
 
 .newsletter-form button {

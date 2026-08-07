@@ -1,4 +1,8 @@
+const { rssPlugin } = require("@11ty/eleventy-plugin-rss");
+
 module.exports = function (eleventyConfig) {
+
+  eleventyConfig.addPlugin(rssPlugin);
 
   /* ------------------------------------------------------------
      PASSTHROUGH COPY
@@ -47,8 +51,66 @@ module.exports = function (eleventyConfig) {
       ...collectionApi.getFilteredByTag("lanzamiento"),
       ...collectionApi.getFilteredByTag("video"),
       ...collectionApi.getFilteredByTag("playlist"),
+      ...collectionApi.getFilteredByTag("noticia"),
     ];
     return items.sort((a, b) => b.date - a.date);
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: limit
+     Corta un array a los primeros N elementos.
+     Uso: {{ collections.lanzamiento | reverse | limit(4) }}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("limit", (arr, n) => arr.slice(0, n));
+
+  /* ------------------------------------------------------------
+     FILTRO: excerpt
+     Recorta contenido HTML a N caracteres de texto plano, sin
+     cortar a mitad de una etiqueta. Uso: {{ content | excerpt(140) }}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("excerpt", (content, length = 140) => {
+    const text = String(content).replace(/<[^>]*>/g, "").trim();
+    if (text.length <= length) return text;
+    return text.slice(0, length).trim() + "…";
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: siblingItem
+     Dado un array de una colección y la URL actual, devuelve el
+     ítem anterior o siguiente. direction: "prev" | "next".
+     Uso: {% set prev = collections.lanzamiento | siblingItem(page.url, "prev") %}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("siblingItem", (collection, currentUrl, direction) => {
+    const idx = collection.findIndex((item) => item.url === currentUrl);
+    if (idx === -1) return null;
+    const siblingIdx = direction === "next" ? idx + 1 : idx - 1;
+    return collection[siblingIdx] || null;
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: relatedItems
+     Devuelve hasta N ítems de una colección, excluyendo el actual.
+     Uso: {{ collections.lanzamiento | relatedItems(page.url, 3) }}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("relatedItems", (collection, currentUrl, limitN = 3) => {
+    return collection.filter((item) => item.url !== currentUrl).slice(0, limitN);
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: groupByYear
+     Agrupa una colección por año (más reciente primero).
+     Uso: {% set porAño = collections.archivo | groupByYear %}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("groupByYear", (collection) => {
+    const groups = {};
+    collection.forEach((item) => {
+      const year = item.date.getFullYear();
+      if (!groups[year]) groups[year] = [];
+      groups[year].push(item);
+    });
+    return Object.keys(groups)
+      .sort((a, b) => b - a)
+      .map((year) => ({ year, items: groups[year] }));
   });
 
   return {

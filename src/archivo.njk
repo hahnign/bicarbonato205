@@ -7,19 +7,25 @@ permalink: /archivo/
 
 <section class="page-hero">
   <h1 class="page-hero__title">Archivo</h1>
-  <p class="card__meta">Todo lo publicado, en orden cronológico.</p>
+  <p class="card__meta">Todo lo publicado, agrupado por año.</p>
 </section>
 
-<section class="page-section">
-  <div class="card-grid">
-    {% for item in collections.archivo %}
-      {% if "lanzamiento" in item.data.tags %}
-        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Lanzamiento", "card__tag--lanzamiento") }}
-      {% elif "video" in item.data.tags %}
-        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Video", "card__tag--video") }}
-      {% elif "playlist" in item.data.tags %}
-        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Playlist", "card__tag--playlist") }}
-      {% endif %}
-    {% endfor %}
-  </div>
-</section>
+{% set porAño = collections.archivo | groupByYear %}
+{% for grupo in porAño %}
+  <section class="page-section">
+    <h2 class="page-section__heading">{{ grupo.year }} <span class="card__meta">({{ grupo.items.length }} publicaciones)</span></h2>
+    <div class="card-grid">
+      {% for item in grupo.items %}
+        {% if "lanzamiento" in item.data.tags %}
+          {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Lanzamiento", "card__tag--lanzamiento") }}
+        {% elif "video" in item.data.tags %}
+          {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Video", "card__tag--video") }}
+        {% elif "playlist" in item.data.tags %}
+          {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Playlist", "card__tag--playlist") }}
+        {% elif "noticia" in item.data.tags %}
+          {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Noticia", "card__tag--noticia") }}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endfor %}

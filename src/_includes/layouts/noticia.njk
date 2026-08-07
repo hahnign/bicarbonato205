@@ -1,0 +1,9 @@
+---
+layout: layouts/base.njk
+---
+<article class="page-section container">
+  <span class="card__tag card__tag--noticia">Noticia</span>
+  <h1 class="page-hero__title">{{ title }}</h1>
+  <p class="card__meta">{{ date | formatDate }}</p>
+  <div class="detail__body">{{ content | safe }}</div>
+</article>

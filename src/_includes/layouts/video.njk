@@ -1,0 +1,34 @@
+---
+layout: layouts/base.njk
+---
+{% from "macros/card.njk" import card %}
+
+<article class="page-section container">
+  <span class="card__tag card__tag--video">Video</span>
+  <h1 class="page-hero__title">{{ title }}</h1>
+  <p class="card__meta">{{ date | formatDate }}</p>
+
+  {% if cover %}<img src="{{ cover }}" alt="{{ title }}">{% endif %}
+
+  <div class="detail__body">{{ content | safe }}</div>
+
+  {% if youtubeUrl %}
+    <a class="btn" href="{{ youtubeUrl }}">Ver en YouTube →</a>
+  {% endif %}
+
+  {% set prev = collections.video | siblingItem(page.url, "prev") %}
+  {% set next = collections.video | siblingItem(page.url, "next") %}
+  <nav class="detail__siblings">
+    {% if prev %}<a href="{{ prev.url }}">← {{ prev.data.title }}</a>{% endif %}
+    {% if next %}<a href="{{ next.url }}">{{ next.data.title }} →</a>{% endif %}
+  </nav>
+</article>
+
+<section class="page-section">
+  <h2 class="page-section__heading">También te puede interesar</h2>
+  <div class="card-grid">
+    {% for item in collections.video | relatedItems(page.url, 3) %}
+      {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Video", "card__tag--video") }}
+    {% endfor %}
+  </div>
+</section>
