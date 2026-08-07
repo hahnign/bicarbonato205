@@ -1,0 +1,16 @@
+---
+layout: layouts/base.njk
+title: Inicio
+---
+
+<h1>{{ site.name }}</h1>
+<p>{{ site.tagline }}</p>
+
+<h2>Lanzamientos (prueba de colección)</h2>
+<ul>
+  {% for release in collections.lanzamiento %}
+    <li>
+      {{ release.data.title }} — {{ release.data.date | formatDate }}
+    </li>
+  {% endfor %}
+</ul>
