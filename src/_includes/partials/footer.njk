@@ -1,3 +1,35 @@
 <footer class="site-footer">
-  <p>&copy; {% currentYear %} {{ site.name }}. Todos los derechos reservados.</p>
+  <div class="site-footer__grid">
+
+    <div class="site-footer__col">
+      <h4 class="site-footer__heading">Streaming</h4>
+      <ul class="site-footer__links">
+        {% for name, url in site.streaming %}
+          <li><a href="{{ url }}">{{ name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h4 class="site-footer__heading">Newsletter</h4>
+      <p class="site-footer__note">No enviamos spam. Solo novedades que realmente valen la pena.</p>
+      <form class="newsletter-form" action="#" method="post">
+        <input type="email" name="email" placeholder="tu@email.com" required aria-label="Correo electrónico">
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+
+    <div class="site-footer__col">
+      <h4 class="site-footer__heading">Contacto</h4>
+      <p><a href="mailto:{{ site.contactEmail }}">{{ site.contactEmail }}</a></p>
+      <ul class="site-footer__links">
+        {% for name, url in site.social %}
+          <li><a href="{{ url }}">{{ name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+  <p class="site-footer__copyright">&copy; {% currentYear %} {{ site.name }}. Todos los derechos reservados.</p>
 </footer>

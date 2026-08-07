@@ -35,6 +35,22 @@ module.exports = function (eleventyConfig) {
      ------------------------------------------------------------ */
   eleventyConfig.addShortcode("currentYear", () => `${new Date().getFullYear()}`);
 
+  /* ------------------------------------------------------------
+     COLECCIÓN CUSTOM: archivo
+     Combina las tres colecciones por tag (lanzamiento, video,
+     playlist) en una sola línea de tiempo ordenada por fecha
+     descendente. Ninguna colección automática por tag hace esto
+     por sí sola — se necesita una función custom.
+     ------------------------------------------------------------ */
+  eleventyConfig.addCollection("archivo", (collectionApi) => {
+    const items = [
+      ...collectionApi.getFilteredByTag("lanzamiento"),
+      ...collectionApi.getFilteredByTag("video"),
+      ...collectionApi.getFilteredByTag("playlist"),
+    ];
+    return items.sort((a, b) => b.date - a.date);
+  });
+
   return {
     dir: {
       input: "src",       // Eleventy lee el contenido desde acá

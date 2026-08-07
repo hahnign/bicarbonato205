@@ -1,0 +1,19 @@
+{#
+  Macro: card
+  Uso: {{ card(title, url, meta, description, categoryLabel, categoryClass) }}
+
+  categoryClass corresponde a una clase CSS definida en components.css
+  (card__tag--lanzamiento, card__tag--video, card__tag--playlist,
+  card__tag--noticia), cada una mapeada a su color de --color-cat-*
+  definido en tokens.css (Fase 4).
+#}
+{% macro card(title, url, meta, description, categoryLabel, categoryClass) %}
+<article class="card">
+  {% if categoryLabel %}
+    <span class="card__tag {{ categoryClass }}">{{ categoryLabel }}</span>
+  {% endif %}
+  {% if meta %}<p class="card__meta">{{ meta }}</p>{% endif %}
+  <h3 class="card__title"><a href="{{ url }}">{{ title }}</a></h3>
+  {% if description %}<p class="card__desc">{{ description }}</p>{% endif %}
+</article>
+{% endmacro %}

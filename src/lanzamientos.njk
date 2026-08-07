@@ -1,21 +1,19 @@
 ---
 layout: layouts/base.njk
-title: Inicio
+title: Lanzamientos
+permalink: /lanzamientos/
 ---
 {% from "macros/card.njk" import card %}
 
 <section class="page-hero">
-  <h1 class="page-hero__title">{{ site.tagline }}</h1>
+  <h1 class="page-hero__title">Lanzamientos</h1>
+  <p class="card__meta">Singles, EPs y álbumes.</p>
 </section>
 
 <section class="page-section">
-  <h2 class="page-section__heading">Novedades</h2>
   <div class="card-grid">
     {% for release in collections.lanzamiento | reverse %}
       {{ card(release.data.title, release.url, release.data.date | formatDate, null, "Lanzamiento", "card__tag--lanzamiento") }}
-    {% endfor %}
-    {% for video in collections.video | reverse %}
-      {{ card(video.data.title, video.url, video.data.date | formatDate, null, "Video", "card__tag--video") }}
     {% endfor %}
   </div>
 </section>

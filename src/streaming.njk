@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+title: Streaming
+permalink: /streaming/
+---
+
+<section class="page-hero">
+  <h1 class="page-hero__title">Streaming</h1>
+  <p class="card__meta">Escuchá en tu plataforma preferida.</p>
+</section>
+
+<section class="page-section">
+  <div class="card-grid">
+    {% for name, url in site.streaming %}
+      <a class="btn" href="{{ url }}">{{ name }} →</a>
+    {% endfor %}
+  </div>
+</section>

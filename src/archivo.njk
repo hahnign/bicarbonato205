@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+title: Archivo
+permalink: /archivo/
+---
+{% from "macros/card.njk" import card %}
+
+<section class="page-hero">
+  <h1 class="page-hero__title">Archivo</h1>
+  <p class="card__meta">Todo lo publicado, en orden cronológico.</p>
+</section>
+
+<section class="page-section">
+  <div class="card-grid">
+    {% for item in collections.archivo %}
+      {% if "lanzamiento" in item.data.tags %}
+        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Lanzamiento", "card__tag--lanzamiento") }}
+      {% elif "video" in item.data.tags %}
+        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Video", "card__tag--video") }}
+      {% elif "playlist" in item.data.tags %}
+        {{ card(item.data.title, item.url, item.data.date | formatDate, null, "Playlist", "card__tag--playlist") }}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

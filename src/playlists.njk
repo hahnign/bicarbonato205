@@ -1,0 +1,19 @@
+---
+layout: layouts/base.njk
+title: Playlists
+permalink: /playlists/
+---
+{% from "macros/card.njk" import card %}
+
+<section class="page-hero">
+  <h1 class="page-hero__title">Playlists</h1>
+  <p class="card__meta">Recomendaciones y curaduría.</p>
+</section>
+
+<section class="page-section">
+  <div class="card-grid">
+    {% for playlist in collections.playlist | reverse %}
+      {{ card(playlist.data.title, playlist.url, playlist.data.platform, null, "Playlist", "card__tag--playlist") }}
+    {% endfor %}
+  </div>
+</section>
