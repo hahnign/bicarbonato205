@@ -240,8 +240,66 @@ dateToRfc822` — ambos errores aparecieron y se corrigieron durante
 
 ---
 
+## FASE 8 — Optimización
+
+**D26. SEO completo (canonical, Open Graph, Twitter Card, JSON-LD
+`MusicGroup`) agregado a `layouts/base.njk`, con `cover` de cada
+contenido como imagen social y `og-default.jpg` como fallback.**
+
+- Por qué: sin esto, compartir un link del sitio en redes/WhatsApp
+  muestra una tarjeta pelada — crítico para un proyecto que depende de
+  que la música se comparta.
+
+**D27. `robots.txt` y `sitemap.xml` generados como templates Eleventy
+(`.njk` con permalink custom), no como archivos estáticos sueltos.**
+
+- Por qué: el sitemap necesita iterar `collections.archivo` dinámicamente;
+  generarlo a mano quedaría desactualizado en cada lanzamiento nuevo.
+
+**D28. Carga de Google Fonts vía `<link>` con `preconnect` +
+`font-display: swap`, en vez de self-hosting.**
+
+- Por qué: implementación más simple; el trade-off (dependencia de un
+  servicio externo) se documenta explícitamente para revisarlo si el
+  proyecto migra a self-hosting de fuentes en el futuro por performance
+  o privacidad.
+- **Gap real detectado y corregido en esta fase:** las variables
+  `--font-*` existían desde la Fase 4 pero nunca se habían cargado —
+  el sitio no se veía con la tipografía del sistema hasta ahora.
+
+**D29. `loading="lazy"` solo en imágenes de grilla (tarjetas), NO en la
+imagen de portada de páginas de detalle.**
+
+- Por qué: la portada de detalle está arriba del pliegue — lazy-load ahí
+  perjudica el LCP (Largest Contentful Paint) en vez de ayudar. Es un
+  error real que cometí y corregí durante esta fase: apliqué lazy a
+  todas las imágenes por defecto, sin distinguir su posición en la
+  página.
+
+**D30. `srcset`/imágenes responsive NO implementado — queda como punto
+abierto documentado, no resuelto con una suposición.**
+
+- Por qué: depende de qué CDN externo se use para alojar imágenes
+  (definido como pendiente desde la Fase 1); implementarlo ahora
+  hubiera significado inventar una convención de URL que puede no
+  coincidir con el CDN real que elijas.
+
+**D31. Skip-link + `aria-current="page"` agregados a header/nav.**
+
+- Por qué: patrón de accesibilidad estándar para navegación por teclado
+  y lectores de pantalla, ausente hasta esta fase.
+
+---
+
 ## Pendiente de registrar (próximas fases)
 
-- Fase 8: SEO, performance, accesibilidad.
+- Fase 9: README, checklist de mantenimiento, guía de reutilización de la plantilla.
+
+## Pendientes NO resueltos por diseño (requieren decisión humana)
+
+- `srcset`/imágenes responsive: depende del CDN de imágenes a elegir.
+- Reemplazar `og-default.jpg`, favicon e íconos por diseño final de marca.
+- Conectar el formulario de newsletter a un proveedor real (Buttondown, Mailchimp, etc.).
+- Completar los valores `REEMPLAZAR` en `_data/site.json` (links reales de streaming y redes).
 - Fase 7: modelo de datos de contenido (front matter de Markdown, colecciones, filtros).
 - Fase 8: decisiones de SEO, performance y accesibilidad.
