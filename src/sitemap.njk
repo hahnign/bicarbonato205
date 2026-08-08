@@ -8,13 +8,13 @@ eleventyExcludeFromCollections: true
   {% set staticPages = ["/", "/archivo/", "/lanzamientos/", "/videos/", "/playlists/", "/streaming/", "/acerca/", "/contacto/", "/buscar/"] %}
   {% for url in staticPages %}
   <url>
-    <loc>{{ url | absoluteUrl(site.url) }}</loc>
+    <loc>{{ site.url }}{{ url }}</loc>
   </url>
   {% endfor %}
 
   {% for item in collections.archivo %}
   <url>
-    <loc>{{ item.url | absoluteUrl(site.url) }}</loc>
+    <loc>{{ site.url }}{{ item.url }}</loc>
     <lastmod>{{ item.date | dateToRfc3339 }}</lastmod>
   </url>
   {% endfor %}

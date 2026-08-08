@@ -126,5 +126,9 @@ module.exports = function (eleventyConfig) {
     // Motor de plantillas para archivos .njk
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
+    // GitHub Pages de proyecto (no de usuario) sirve el sitio bajo
+    // /bicarbonato205/, no en la raíz del dominio. pathPrefix le avisa
+    // esto a Eleventy.
+    pathPrefix: "/bicarbonato205/",
   };
 };

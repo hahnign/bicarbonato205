@@ -15,8 +15,8 @@ eleventyExcludeFromCollections: true
   {% for item in collections.archivo | reverse | limit(20) %}
   <item>
     <title>{{ item.data.title }}</title>
-    <link>{{ item.url | absoluteUrl(site.url) }}</link>
-    <guid>{{ item.url | absoluteUrl(site.url) }}</guid>
+    <link>{{ site.url }}{{ item.url }}</link>
+    <guid>{{ site.url }}{{ item.url }}</guid>
     <pubDate>{{ item.date | dateToRfc822 }}</pubDate>
   </item>
   {% endfor %}
