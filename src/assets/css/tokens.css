@@ -1,59 +1,63 @@
 /* ============================================================
-   BICARBONATO205 — DESIGN TOKENS
-   Fuente única de verdad para todo el sistema visual.
-   No usar valores "sueltos" (hex, px) en el resto del CSS del
-   proyecto: siempre referenciar estas variables. Si un color o
-   espaciado cambia, cambia acá y se propaga a todo el sitio.
+   BICARBONATO205 — DESIGN TOKENS (v2, identidad real de marca)
+   Reemplaza la paleta oscura/lima de la Fase 4, que se basó en un
+   mockup que no correspondía a la identidad real del proyecto.
+   Paleta extraída por muestreo de píxeles del Linktree oficial
+   (rojo dominante #B50000, fondo blanco/crema).
+   Ver docs/DECISIONS.md para el detalle de esta decisión.
    ============================================================ */
 
 :root {
 
-  /* ---------- COLOR: BASE ---------- */
-  --color-bg:          #0A0A0A; /* fondo general del sitio */
-  --color-surface:     #141414; /* tarjetas, sidebar, inputs */
-  --color-surface-alt: #1B1B1B; /* hover sobre surface, estados intermedios */
-  --color-border:      #2A2A2A; /* líneas finas estructurales */
+  /* ---------- COLOR: BASE (antes oscuro, ahora claro) ---------- */
+  --color-bg:          #FFFFFF; /* fondo general del sitio */
+  --color-surface:     #F7F5F2; /* tarjetas, sidebar, inputs — crema suave */
+  --color-surface-alt: #EFEDE9; /* hover sobre surface, estados intermedios */
+  --color-border:      #E4E1DB; /* líneas y bordes de tarjetas/inputs */
 
-  /* ---------- COLOR: TEXTO ---------- */
-  --color-text:        #F5F5F2; /* texto principal */
-  --color-text-muted:  #8C8C8C; /* descripciones, texto secundario */
-  --color-text-faint:  #5A5A5A; /* metadatos de bajo peso: fechas, timestamps */
-  --color-text-on-accent: #0A0A0A; /* texto sobre fondos de acento (lima, etc) */
+  /* ---------- COLOR: TEXTO (invertido respecto a la Fase 4) ---------- */
+  --color-text:        #1A1A1A; /* texto principal, casi negro */
+  --color-text-muted:  #6E6B66; /* descripciones, texto secundario */
+  --color-text-faint:  #9C9890; /* metadatos de bajo peso: fechas, timestamps */
+  --color-text-on-accent: #FFFFFF; /* texto sobre fondos de acento (rojo) */
 
   /* ---------- COLOR: ACENTO PRINCIPAL ---------- */
-  --color-accent:       #D4FF3D; /* verde lima — único acento de marca */
-  --color-accent-hover: #E4FF6B; /* variante clara para hover sobre fondo lima */
+  --color-accent:       #B50000; /* rojo de marca real, ver DECISIONS.md */
+  --color-accent-hover: #8F0000; /* rojo más oscuro — en fondo claro, el
+                                     hover oscurece en vez de aclarar */
 
   /* ---------- COLOR: CATEGORÍAS (etiquetas de contenido) ----------
-     Uso exclusivo en badges de tipo de contenido. Nunca como acento
+     Uso exclusivo en badges de tipo de contenido, nunca como acento
      de marca ni en botones/CTAs — ese rol es solo de --color-accent. */
-  --color-cat-lanzamientos: #D4FF3D; /* mismo lima: lanzamiento = núcleo del proyecto */
-  --color-cat-videos:       #FF8A3D; /* naranja */
-  --color-cat-playlists:    #C74BFF; /* magenta/violeta */
-  --color-cat-noticias:     #3DDBD9; /* celeste/teal */
+  --color-cat-lanzamientos: #B50000; /* mismo rojo: lanzamiento = núcleo del proyecto */
+  --color-cat-videos:       #B8690F; /* ámbar/naranja quemado */
+  --color-cat-playlists:    #7B3FA0; /* violeta */
+  --color-cat-noticias:     #1F7A8C; /* teal */
 
-  /* ---------- TIPOGRAFÍA: FAMILIAS ---------- */
+  /* ---------- TIPOGRAFÍA ----------
+     Sin cambios respecto a la Fase 4 por ahora — la decisión de esta
+     ronda fue específicamente sobre color y forma. La familia Archivo
+     Black no necesariamente combina con el espíritu del isotipo real
+     (más "stencil"/banda de rock); queda como punto abierto a revisar
+     si en algún momento se quiere una tipografía de título más acorde
+     al logo oficial. */
   --font-display: 'Archivo Black', 'Arial Black', sans-serif;
   --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
   --font-body:    'Inter', -apple-system, sans-serif;
 
-  /* ---------- TIPOGRAFÍA: ESCALA ----------
-     Escala tipográfica con proporción ~1.25 (major third),
-     en rem para respetar la configuración de tamaño del usuario. */
-  --text-xs:   0.75rem;   /* 12px — metadatos, timestamps */
-  --text-sm:   0.875rem;  /* 14px — nav, labels, botones */
-  --text-base: 1rem;      /* 16px — cuerpo de texto */
-  --text-md:   1.25rem;   /* 20px — subtítulos */
-  --text-lg:   1.75rem;   /* 28px — títulos de sección */
-  --text-xl:   2.5rem;    /* 40px — títulos destacados */
-  --text-2xl:  4rem;      /* 64px — hero / display principal */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   clamp(1.5rem, 4vw, 1.75rem);
+  --text-xl:   clamp(1.75rem, 6vw, 2.5rem);
+  --text-2xl:  clamp(2.25rem, 9vw, 4rem);
 
-  /* ---------- TIPOGRAFÍA: TRACKING ---------- */
-  --tracking-tight:  -0.02em; /* títulos display grandes */
+  --tracking-tight:  -0.02em;
   --tracking-normal:  0em;
-  --tracking-wide:    0.08em; /* nav, labels, badges en mayúsculas */
+  --tracking-wide:    0.08em;
 
-  /* ---------- ESPACIADO: ESCALA BASE-4 ---------- */
+  /* ---------- ESPACIADO: SIN CAMBIOS ---------- */
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
@@ -65,42 +69,28 @@
   --space-24: 96px;
   --space-32: 128px;
 
-  /* ---------- LAYOUT ---------- */
   --container-max: 1440px;
   --grid-columns: 12;
   --grid-gap: var(--space-6);
 
-  /* ---------- BORDES Y FORMA ----------
-     Brutalista = sin curvas. Este valor existe únicamente para
-     que quede explícito en el sistema, no como variable "a ajustar". */
-  --radius: 0;
+  /* ---------- BORDES Y FORMA (invertido: ahora SÍ hay curvas) ----------
+     La Fase 4 fijó radius:0 como parte de una identidad "brutalista"
+     que ya no aplica — el Linktree real usa esquinas redondeadas en
+     tarjetas, botones e íconos. */
+  --radius-sm:   8px;   /* inputs, badges */
+  --radius-md:   14px;  /* tarjetas */
+  --radius-full: 999px; /* botones e íconos circulares */
   --border-width: 1px;
 
-  /* ---------- SOMBRAS ----------
-     Deliberadamente sin box-shadow en el sistema. La jerarquía se
-     resuelve con --color-surface y --color-border, no con sombras. */
+  /* ---------- SOMBRAS (nuevas — antes explícitamente ausentes) ----------
+     Sombras suaves, consistentes con tarjetas sobre fondo claro. */
+  --shadow-sm: 0 1px 3px rgba(20, 20, 20, 0.08);
+  --shadow-md: 0 6px 20px rgba(20, 20, 20, 0.08);
 
-  /* ---------- MOTION ---------- */
   --transition-fast: 150ms ease-out;
   --transition-base: 200ms ease-out;
-
-  /* ---------- BREAKPOINTS ----------
-     Nota: no usables directamente en CSS custom properties dentro
-     de @media (limitación del lenguaje). Se documentan acá como
-     referencia y se repiten como valores literales en cada media
-     query del proyecto. */
-  /* --bp-mobile:  480px */
-  /* --bp-tablet:  768px */
-  /* --bp-desktop: 1024px */
-  /* --bp-wide:    1440px */
 }
 
-/* ============================================================
-   ACCESIBILIDAD: preferencia de movimiento reducido
-   Respeta la configuración del sistema operativo del usuario.
-   Sin esto, --transition-* se aplicaría incluso a quien
-   configuró su sistema para minimizar animaciones.
-   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --transition-fast: 0ms;
