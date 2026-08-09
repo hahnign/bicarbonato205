@@ -420,9 +420,39 @@ iPhone) — scroll horizontal, layout roto.**
   de 64px fijos a ~36px reales vía `clamp()`, y la palabra más larga
   entra dentro del espacio disponible con margen.
 
----
+## POST-LANZAMIENTO — Datos reales, favicon e íconos sociales
 
-## PROYECTO CERRADO
+**D40. `_data/site.json` cargado con los datos reales del proyecto**
+(Spotify, YouTube, Apple Music, Deezer, SoundCloud, Instagram, Facebook,
+email de contacto). Se sacaron `bandcamp` y `twitter` (no provistos) en
+vez de dejarlos con placeholder `REEMPLAZAR` — consistente con el
+principio de mantenimiento mínimo: mejor un dato ausente que uno roto.
+
+**D41. Favicon, apple-touch-icon, íconos de manifest y `og-default.jpg`
+regenerados a partir del logo real** (subido por el usuario), reemplazando
+los placeholders lima de la Fase 8. `theme-color` corregido a rojo
+(`#B50000`) en `base.njk` y `site.webmanifest` (había quedado en negro
+tras el rediseño de paleta).
+
+- Limitación reconocida explícitamente: el favicon de 32px es poco
+  legible porque el logo es un wordmark completo, no un ícono
+  compacto — se mantiene así porque el usuario pidió usar ese archivo
+  puntualmente, no se resolvió con un diseño alternativo inventado.
+
+**D42. Íconos sociales del footer: monograma en círculo rojo (inicial
+de la plataforma), no el logo oficial de cada marca.**
+
+- Por qué: reproducir logos de marca de memoria en SVG es poco
+  confiable y además son marcas registradas de terceros; el monograma
+  mantiene el lenguaje visual circular del Linktree real sin ese riesgo.
+- Alternativa disponible si se quiere más adelante: sumar una librería
+  de íconos (ej. Simple Icons) para íconos de marca oficiales — no
+  implementado ahora porque agrega una dependencia nueva sin que se
+  haya pedido explícitamente.
+- Implementado como macro reutilizable (`macros/icon.njk`), consumida
+  genéricamente desde `site.streaming` y `site.social` — agregar una
+  plataforma nueva a `site.json` alcanza para que aparezca en el
+  footer, sin tocar el template.
 
 Las 9 fases están completas y verificadas con builds reales en cada paso
 (incluyendo errores genuinos que aparecieron y se corrigieron en el
@@ -441,3 +471,31 @@ estrategia de imágenes responsive según el CDN que elijas.
 - Completar los valores `REEMPLAZAR` en `_data/site.json` (links reales de streaming y redes).
 - Fase 7: modelo de datos de contenido (front matter de Markdown, colecciones, filtros).
 - Fase 8: decisiones de SEO, performance y accesibilidad.
+
+## POST-LANZAMIENTO — Ajuste de feedback: footer e íconos vueltos atrás
+
+**D43. Revertido D42 (íconos circulares en el footer) a pedido explícito
+del usuario — vuelta a la lista de texto plano (versión pre-D42).**
+
+- Por qué: preferencia directa del usuario, sin ambigüedad — "no me
+  gustaron los logos de streaming". Se eliminó también `macros/icon.njk`
+  y el CSS de `.social-icon`/`.social-icon-row` por completo (no
+  ocultado con CSS, sino removido del código) para no dejar código
+  muerto en el proyecto.
+
+**D44. Favicon simplificado a un monograma limpio: "B" blanca centrada
+sobre el rojo de marca (`#B50000`), reemplazando el intento anterior de
+usar el wordmark completo reducido (D41), que el usuario consideró poco
+legible/prolijo.**
+
+- Resuelve además la limitación que yo mismo había señalado en D41
+  (favicon de 32px ilegible por ser un wordmark completo) — en este
+  caso la corrección de diseño y el pedido del usuario coincidieron.
+
+---
+
+## PROYECTO CERRADO
+
+Ver historial completo de decisiones arriba (D1-D44). El proyecto sigue
+activo en mantenimiento — este documento continúa registrando cambios
+reales a medida que aparecen, no solo las 9 fases originales.
