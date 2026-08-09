@@ -311,24 +311,6 @@
   margin-bottom: var(--space-8);
 }
 
-/* ---------- ÍCONOS SOCIALES CIRCULARES (nuevo — inspirado en el Linktree) ---------- */
-
-.social-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: var(--color-accent);
-  color: var(--color-text-on-accent);
-  transition: background var(--transition-fast);
-}
-
-.social-icon:hover {
-  background: var(--color-accent-hover);
-}
-
 /* ---------- RESPONSIVE ---------- */
 
 @media (max-width: 1024px) {
