@@ -13,7 +13,7 @@ permalink: /playlists/
 <section class="page-section">
   <div class="card-grid">
     {% for playlist in collections.playlist | reverse %}
-      {{ card(playlist.data.title, playlist.url, playlist.data.platform, null, "Playlist", "card__tag--playlist") }}
+      {{ card(playlist.data.title, playlist.data.date | formatDate, playlist.templateContent, "Playlist", "card__tag--playlist", null, playlist.data.url, null, playlist.data.platform) }}
     {% endfor %}
   </div>
 </section>

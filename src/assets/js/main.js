@@ -43,3 +43,28 @@ if (searchInput) {
     }
   });
 }
+
+// Toggle "Más" / "Menos" en la descripción de las tarjetas.
+// Delegado en document: funciona para cualquier tarjeta, sin importar
+// cuántas haya en la página ni si se agregan más en el futuro.
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-more]");
+  if (!button) return;
+
+  const card = button.closest(".card");
+  const preview = card.querySelector("[data-preview]");
+  const full = card.querySelector("[data-full]");
+  const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+  if (isExpanded) {
+    full.hidden = true;
+    preview.hidden = false;
+    button.textContent = "Más";
+    button.setAttribute("aria-expanded", "false");
+  } else {
+    full.hidden = false;
+    preview.hidden = true;
+    button.textContent = "Menos";
+    button.setAttribute("aria-expanded", "true");
+  }
+});

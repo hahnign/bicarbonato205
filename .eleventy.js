@@ -116,6 +116,39 @@ module.exports = function (eleventyConfig) {
       .map((year) => ({ year, items: groups[year] }));
   });
 
+  /* ------------------------------------------------------------
+     FILTRO: stripHtml
+     Quita etiquetas HTML SIN truncar (a diferencia de `excerpt`,
+     que sí recorta). Se usa para mostrar el texto completo de una
+     descripción cuando el usuario pide "leer más".
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("stripHtml", (content) => {
+    return String(content).replace(/<[^>]*>/g, "").trim();
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: platformLabel
+     Detecta la plataforma de streaming a partir del dominio de la
+     URL, para que el botón de la tarjeta diga "Spotify", "YouTube",
+     etc. automáticamente, sin tener que escribirlo a mano en cada
+     página y sin que se desactualice si cambia el link.
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("platformLabel", (url) => {
+    if (!url) return "Escuchar";
+    const platforms = [
+      [/spotify|spoti\.fi/i, "Spotify"],
+      [/music\.apple/i, "Apple Music"],
+      [/youtu\.?be/i, "YouTube"],
+      [/soundcloud/i, "SoundCloud"],
+      [/deezer/i, "Deezer"],
+      [/bandcamp/i, "Bandcamp"],
+    ];
+    for (const [regex, label] of platforms) {
+      if (regex.test(url)) return label;
+    }
+    return "Escuchar";
+  });
+
   return {
     dir: {
       input: "src",       // Eleventy lee el contenido desde acá

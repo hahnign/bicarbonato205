@@ -1,16 +1,26 @@
 {#
   Macro: card
-  Uso: {{ card(title, url, meta, description, categoryLabel, categoryClass, cover) }}
+  Uso: {{ card(title, meta, content, categoryLabel, categoryClass, cover, actionUrl, internalUrl, actionLabelOverride) }}
 
-  categoryClass corresponde a una clase CSS definida en components.css
-  (card__tag--lanzamiento, card__tag--video, card__tag--playlist,
-  card__tag--noticia), cada una mapeada a su color de --color-cat-*
-  definido en tokens.css (Fase 4).
+  content: el HTML/texto crudo del cuerpo (item.templateContent), SIN
+  recortar — la macro decide internamente si hace falta mostrar un
+  botón "Más" según si el texto excede ~110 caracteres.
 
-  cover es opcional: si se pasa, la imagen se carga con loading="lazy"
-  y decoding="async" (Fase 8) para no bloquear el render de la grilla.
+  actionUrl: si se pasa, la tarjeta muestra un botón pill que lleva a
+  esa URL externa. El texto del botón se detecta automáticamente según
+  la plataforma (filtro platformLabel), salvo que se pase
+  actionLabelOverride explícito (usado en Playlist, donde ya tenemos
+  el nombre real de la plataforma en los datos, más confiable que
+  adivinarlo de la URL).
+
+  internalUrl: si se pasa (y no actionUrl), el título linkea a esa
+  página interna — usado solo por Noticia, que no tiene plataforma
+  externa a la que mandar al usuario.
 #}
-{% macro card(title, url, meta, description, categoryLabel, categoryClass, cover) %}
+{% macro card(title, meta, content, categoryLabel, categoryClass, cover, actionUrl, internalUrl, actionLabelOverride) %}
+{% set fullText = content | stripHtml %}
+{% set preview = content | excerpt(110) %}
+{% set hasMore = fullText.length > 110 %}
 <article class="card">
   {% if cover %}
     <img src="{{ cover }}" alt="" loading="lazy" decoding="async" class="card__cover">
@@ -19,7 +29,18 @@
     <span class="card__tag {{ categoryClass }}">{{ categoryLabel }}</span>
   {% endif %}
   {% if meta %}<p class="card__meta">{{ meta }}</p>{% endif %}
-  <h3 class="card__title"><a href="{{ url }}">{{ title }}</a></h3>
-  {% if description %}<p class="card__desc">{{ description }}</p>{% endif %}
+  <h3 class="card__title">
+    {% if internalUrl %}<a href="{{ internalUrl }}">{{ title }}</a>{% else %}{{ title }}{% endif %}
+  </h3>
+  {% if content %}
+    <p class="card__desc" data-preview>{{ preview }}</p>
+    {% if hasMore %}
+      <p class="card__desc card__desc--full" data-full hidden>{{ fullText }}</p>
+      <button type="button" class="card__more-btn" data-more aria-expanded="false">Más</button>
+    {% endif %}
+  {% endif %}
+  {% if actionUrl %}
+    <a class="btn btn--sm btn--pill" href="{{ actionUrl }}">{{ actionLabelOverride or (actionUrl | platformLabel) }} →</a>
+  {% endif %}
 </article>
 {% endmacro %}
