@@ -499,3 +499,69 @@ legible/prolijo.**
 Ver historial completo de decisiones arriba (D1-D44). El proyecto sigue
 activo en mantenimiento — este documento continúa registrando cambios
 reales a medida que aparecen, no solo las 9 fases originales.
+
+## POST-LANZAMIENTO — Primer contenido real
+
+**D45. Primer lanzamiento y video reales cargados ("Poco Tiempo",
+13 feb 2022), reemplazando los 4 archivos de ejemplo/prueba, que se
+eliminaron por completo (`ejemplo-single.md`, `ejemplo-video.md`,
+`ejemplo-playlist.md`, `ejemplo-noticia.md`).**
+
+- Se cargó como DOS entradas de contenido (lanzamiento + video), no una
+  sola — el modelo de datos del proyecto ya distinguía ambos tipos
+  desde la Fase 7, y esta pieza real encaja naturalmente en los dos:
+  es una canción (con streaming) y tiene un video oficial (con YouTube).
+- `cover` usa la miniatura de YouTube (`i.ytimg.com`) como portada
+  provisoria, al no haber otra imagen disponible todavía — coherente
+  con la decisión de la Fase 1 de no alojar imágenes pesadas en el
+  repo (URL externa real, no un archivo local).
+- Las colecciones `playlist` y `noticia` quedan vacías (sin archivo de
+  ejemplo ni contenido real) — estado válido: las páginas
+  correspondientes renderizan una grilla vacía sin romper, hasta que
+  haya contenido real de esos tipos.
+
+## POST-LANZAMIENTO — Tarjetas autosuficientes (sin navegación interna)
+
+**D46. Las tarjetas de Lanzamiento, Video y Playlist dejaron de navegar
+a una página de detalle interna — ahora muestran fecha, resumen
+(generado con el filtro `excerpt` ya existente desde la Fase 7) y un
+botón que lleva directo a la plataforma externa (Spotify/YouTube/etc),
+similar a una grilla de YouTube.**
+
+- Por qué: pedido explícito del usuario — no le gustaba que el click
+  lo sacara a una página dominada por una imagen grande.
+- Noticia es la excepción: sigue linkeando a su propia página, porque
+  no tiene una plataforma externa a la que mandar al usuario.
+- Las páginas de detalle (`release.njk`, `video.njk`, `playlist.njk`)
+  NO se eliminaron — siguen existiendo como URLs reales (sitemap, RSS,
+  resultados de búsqueda), solo se sacaron del flujo de navegación
+  normal desde las grillas.
+- Cambió la firma de la macro `card()` (de 7 a 9 parámetros, con dos
+  modos: `actionUrl` para acción externa o `internalUrl` para link
+  interno) — se actualizaron los 11 lugares donde se usaba.
+
+## POST-LANZAMIENTO — Refinamiento de tarjetas (imagen, texto, plataforma, hover)
+
+**D47. Cuatro ajustes a las tarjetas de contenido, todos a pedido
+explícito del usuario:**
+
+- Portada: `aspect-ratio` cambiado de 4:3 a 16:9, para que coincida
+  exactamente con la proporción nativa de las miniaturas de YouTube
+  (1280x720) y no las recorte.
+- Descripción: ya no se corta con el filtro `excerpt` a nivel de
+  visualización final — se muestra un preview (~110 caracteres) y,
+  si el texto completo es más largo, un botón "Más"/"Menos" (JS
+  delegado en `main.js`) alterna entre preview y texto completo sin
+  recargar la página. Nuevo filtro `stripHtml` (quita tags sin
+  truncar) para obtener el texto completo limpio.
+- Botón de acción: pasó de texto fijo ("Escuchar"/"Ver video") a
+  detección automática de plataforma por dominio de la URL (nuevo
+  filtro `platformLabel`) — dice "Spotify", "YouTube", etc.
+  automáticamente. **Limitación real, no resuelta:** acortadores
+  genéricos (bit.ly, tinyurl) no son detectables por este método,
+  solo dominios/acortadores oficiales de cada plataforma (incluye
+  `spoti.fi` de Spotify, agregado tras detectarlo como bug real con
+  el link provisto por el usuario).
+- Hover de tarjeta: se sacó el `transform: translateY(-2px)` — el
+  usuario no quería que la tarjeta "se mueva" al pasar el mouse; se
+  mantiene solo el cambio de sombra.
