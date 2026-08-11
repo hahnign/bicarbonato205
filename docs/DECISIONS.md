@@ -565,3 +565,44 @@ explícito del usuario:**
 - Hover de tarjeta: se sacó el `transform: translateY(-2px)` — el
   usuario no quería que la tarjeta "se mueva" al pasar el mouse; se
   mantiene solo el cambio de sombra.
+
+## POST-LANZAMIENTO — Footer, botón "Más" real, y modo oscuro
+
+**D48. Footer: email integrado a la misma lista que Instagram/Facebook,
+sin mostrar la dirección textualmente ("Email" como texto de link, con
+el mailto: real en el href).**
+
+**D49. Botón "Más"/"Menos" rehecho: de recorte por cantidad fija de
+caracteres a recorte visual con CSS (`-webkit-line-clamp: 3`) + JS que
+mide el desborde real (`scrollHeight > clientHeight`) para decidir si
+mostrar el botón.**
+
+- Por qué: un recorte por caracteres no sabe si el texto realmente
+  desborda una tarjeta de ancho variable (1 a 4 columnas según
+  viewport) — el mismo texto puede sobrar espacio en mobile (1
+  columna, más ancho) y desbordar en desktop (4 columnas, más angosto).
+  La medición real resuelve esto sin adivinar.
+- Se intentó primero poner el botón DENTRO del párrafo con line-clamp
+  para que apareciera "en la misma línea que los tres puntos" — se
+  descartó: el contenido que no entra en un `line-clamp` se oculta,
+  no se reordena para aparecer en el punto de corte, es un
+  comportamiento de CSS no confiable entre navegadores. Se resolvió
+  con el botón inmediatamente debajo, sin espacio extra — visualmente
+  equivalente, técnicamente robusto.
+
+**D50. Modo oscuro/claro implementado.**
+
+- Paleta oscura completa como override de `:root[data-theme="dark"]`
+  en `tokens.css` — el resto del CSS no cambia, sigue consumiendo las
+  mismas variables.
+- Acento rojo ajustado en modo oscuro (`#FF5C5C` en vez de `#B50000`
+  de marca) porque el rojo de marca pierde legibilidad como texto
+  sobre fondo oscuro — se mantiene la familia de color, no el valor
+  exacto.
+- Persistencia con `localStorage` + respeto de `prefers-color-scheme`
+  como default si el usuario nunca lo tocó — corresponde acá porque es
+  un sitio real desplegado, no un artifact de la interfaz de Claude
+  (la restricción de no usar localStorage aplica solo a ese contexto).
+- Script bloqueante e inline al principio del `<head>` (antes de los
+  `<link>` de CSS) para aplicar el tema guardado antes del primer
+  render y evitar el flash de tema incorrecto.
