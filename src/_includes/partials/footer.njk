@@ -21,8 +21,8 @@
 
     <div class="site-footer__col">
       <h4 class="site-footer__heading">Contacto</h4>
-      <p><a href="mailto:{{ site.contactEmail }}">{{ site.contactEmail }}</a></p>
       <ul class="site-footer__links">
+        <li><a href="mailto:{{ site.contactEmail }}">Email</a></li>
         {% for name, url in site.social %}
           <li><a href="{{ url }}">{{ name }}</a></li>
         {% endfor %}

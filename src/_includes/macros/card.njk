@@ -2,25 +2,15 @@
   Macro: card
   Uso: {{ card(title, meta, content, categoryLabel, categoryClass, cover, actionUrl, internalUrl, actionLabelOverride) }}
 
-  content: el HTML/texto crudo del cuerpo (item.templateContent), SIN
-  recortar — la macro decide internamente si hace falta mostrar un
-  botón "Más" según si el texto excede ~110 caracteres.
-
-  actionUrl: si se pasa, la tarjeta muestra un botón pill que lleva a
-  esa URL externa. El texto del botón se detecta automáticamente según
-  la plataforma (filtro platformLabel), salvo que se pase
-  actionLabelOverride explícito (usado en Playlist, donde ya tenemos
-  el nombre real de la plataforma en los datos, más confiable que
-  adivinarlo de la URL).
-
-  internalUrl: si se pasa (y no actionUrl), el título linkea a esa
-  página interna — usado solo por Noticia, que no tiene plataforma
-  externa a la que mandar al usuario.
+  content: el HTML/texto crudo del cuerpo (item.templateContent). El
+  texto SIEMPRE se renderiza completo — el recorte visual a 3 líneas es
+  CSS (line-clamp), y un script chequea en el navegador si el texto
+  realmente desborda esas 3 líneas. Si entra completo, el botón "Más"
+  no se muestra (a diferencia de un recorte por cantidad fija de
+  caracteres, que no sabe si hacía falta o no).
 #}
 {% macro card(title, meta, content, categoryLabel, categoryClass, cover, actionUrl, internalUrl, actionLabelOverride) %}
 {% set fullText = content | stripHtml %}
-{% set preview = content | excerpt(110) %}
-{% set hasMore = fullText.length > 110 %}
 <article class="card">
   {% if cover %}
     <img src="{{ cover }}" alt="" loading="lazy" decoding="async" class="card__cover">
@@ -33,11 +23,10 @@
     {% if internalUrl %}<a href="{{ internalUrl }}">{{ title }}</a>{% else %}{{ title }}{% endif %}
   </h3>
   {% if content %}
-    <p class="card__desc" data-preview>{{ preview }}</p>
-    {% if hasMore %}
-      <p class="card__desc card__desc--full" data-full hidden>{{ fullText }}</p>
-      <button type="button" class="card__more-btn" data-more aria-expanded="false">Más</button>
-    {% endif %}
+    <div class="card__desc-wrap">
+      <p class="card__desc" data-clamp-text>{{ fullText }}</p>
+      <button type="button" class="card__more-btn" data-more hidden aria-expanded="false">Más</button>
+    </div>
   {% endif %}
   {% if actionUrl %}
     <a class="btn btn--sm btn--pill" href="{{ actionUrl }}">{{ actionLabelOverride or (actionUrl | platformLabel) }} →</a>

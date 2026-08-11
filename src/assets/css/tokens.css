@@ -97,3 +97,31 @@
     --transition-base: 0ms;
   }
 }
+
+/* ============================================================
+   MODO OSCURO
+   Override completo de los tokens de color cuando <html> tiene
+   data-theme="dark" (asignado por JS — ver main.js). El resto del
+   CSS del proyecto no necesita saber nada de esto: sigue consumiendo
+   las mismas variables, que ahora resuelven a otro valor.
+   ============================================================ */
+:root[data-theme="dark"] {
+  --color-bg:          #0F0F0F;
+  --color-surface:     #1A1A1A;
+  --color-surface-alt: #242424;
+  --color-border:      #333333;
+
+  --color-text:        #F5F5F2;
+  --color-text-muted:  #A8A29B;
+  --color-text-faint:  #726C64;
+  --color-text-on-accent: #FFFFFF;
+
+  /* Rojo más claro que el de marca (#B50000): sobre fondo oscuro,
+     el rojo de marca pierde legibilidad como texto/link — se
+     mantiene la misma familia de color, ajustada para contraste. */
+  --color-accent:       #FF5C5C;
+  --color-accent-hover: #FF8080;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+}

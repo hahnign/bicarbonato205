@@ -3,6 +3,9 @@
     <a href="/" class="site-header__logo">{{ site.name }}</a>
     <p class="site-header__tagline">{{ site.tagline }}</p>
     <a href="/buscar/" class="site-header__search">Buscar</a>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar a modo oscuro">
+      <span aria-hidden="true" data-theme-icon>🌙</span>
+    </button>
   </div>
   {% include "partials/nav.njk" %}
 </header>

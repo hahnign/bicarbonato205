@@ -6,6 +6,34 @@
 // en la página actual (evita cargar/ejecutar lógica innecesaria en el
 // resto del sitio).
 
+// Toggle de modo oscuro/claro. El tema inicial ya se aplicó en el
+// script bloqueante del <head> (evita el flash); acá solo manejamos
+// el click y la persistencia.
+const themeToggle = document.getElementById("theme-toggle");
+const themeIcon = document.querySelector("[data-theme-icon]");
+
+function updateThemeIcon() {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  if (themeIcon) themeIcon.textContent = isDark ? "☀️" : "🌙";
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-label", isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+  }
+}
+
+updateThemeIcon();
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
+    updateThemeIcon();
+  });
+}
+
 const searchInput = document.getElementById("search-input");
 
 if (searchInput) {
@@ -44,27 +72,34 @@ if (searchInput) {
   });
 }
 
-// Toggle "Más" / "Menos" en la descripción de las tarjetas.
-// Delegado en document: funciona para cualquier tarjeta, sin importar
-// cuántas haya en la página ni si se agregan más en el futuro.
+// "Más" / "Menos" en la descripción de las tarjetas.
+// A diferencia de un recorte por cantidad fija de caracteres, acá se
+// mide el desborde REAL del texto renderizado: si el párrafo (recortado
+// visualmente a 3 líneas por CSS) tiene más alto de contenido que el
+// que se ve, el texto no entraba y corresponde mostrar "Más". Si entra
+// completo, el botón directamente no se muestra.
+function initCardDescriptions() {
+  document.querySelectorAll("[data-clamp-text]").forEach((paragraph) => {
+    const overflows = paragraph.scrollHeight > paragraph.clientHeight + 1;
+    const button = paragraph.nextElementSibling;
+    if (!button || !button.hasAttribute("data-more")) return;
+
+    if (overflows) {
+      button.hidden = false;
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initCardDescriptions);
+
 document.addEventListener("click", (event) => {
   const button = event.target.closest("[data-more]");
   if (!button) return;
 
-  const card = button.closest(".card");
-  const preview = card.querySelector("[data-preview]");
-  const full = card.querySelector("[data-full]");
+  const paragraph = button.previousElementSibling;
   const isExpanded = button.getAttribute("aria-expanded") === "true";
 
-  if (isExpanded) {
-    full.hidden = true;
-    preview.hidden = false;
-    button.textContent = "Más";
-    button.setAttribute("aria-expanded", "false");
-  } else {
-    full.hidden = false;
-    preview.hidden = true;
-    button.textContent = "Menos";
-    button.setAttribute("aria-expanded", "true");
-  }
+  paragraph.classList.toggle("is-expanded", !isExpanded);
+  button.textContent = isExpanded ? "Más" : "Menos";
+  button.setAttribute("aria-expanded", String(!isExpanded));
 });
