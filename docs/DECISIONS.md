@@ -606,3 +606,25 @@ mostrar el botón.**
 - Script bloqueante e inline al principio del `<head>` (antes de los
   `<link>` de CSS) para aplicar el tema guardado antes del primer
   render y evitar el flash de tema incorrecto.
+
+## POST-LANZAMIENTO — Automatización de contenido nuevo
+
+**D51. Script `scripts/nuevo-contenido.mjs` (`npm run new -- <tipo>`)
+para automatizar la creación de contenido, más `docs/PLANTILLAS.md`
+como referencia manual de respaldo.**
+
+- El script usa el oEmbed público de YouTube (sin API key) para
+  autocompletar título y portada cuando se pega un link, ante la
+  necesidad real del usuario de subir contenido que ya tiene publicado.
+- Extensión `.mjs` (no `.js` + `"type": "module"` en `package.json`):
+  se descartó explícitamente `"type": "module"` global porque hubiera
+  roto `.eleventy.js`, que usa sintaxis CommonJS (`module.exports`).
+  `.mjs` fuerza módulo ES solo para este archivo, sin tocar la
+  configuración del resto del proyecto — bug real evitado antes de
+  llegar a entregarlo.
+- Verificado con un harness de prueba que simula tipeo real
+  (respuestas con demora entre cada una, vía `child_process.spawn`),
+  no con `printf | node`, porque ese método de testing tiene un
+  artefacto conocido de Node (el pipe se cierra antes de que el
+  programa termine de leer preguntas secuenciales) que no reproduce
+  el uso real en una terminal interactiva.
