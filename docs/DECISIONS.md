@@ -646,3 +646,30 @@ Archivo Black + IBM Plex Mono + Inter.**
   (estilo "técnico/terminal"). No se revirtió preventivamente porque
   fue un pedido directo, pero se marcó como punto a confirmar tras ver
   el resultado publicado.
+
+## POST-LANZAMIENTO — Múltiples plataformas por tarjeta
+
+\*\*D53. Nuevo campo opcional `links` (lista) en Lanzamiento y Video,
+para mostrar varias pills de plataforma en una misma tarjeta (Spotify
+
+- YouTube + Deezer + Apple Music, etc.), no solo una.\*\*
+
+* Nuevo filtro `collectLinks`: combina el campo singular viejo
+  (`streamingUrl`/`youtubeUrl`/`url`, según tipo) con el nuevo campo
+  plural `links`, sin duplicados — mantiene compatibilidad total con
+  el contenido ya cargado (Poco Tiempo sigue funcionando sin cambios).
+* La macro `card()` pasó de recibir una URL única a recibir un array;
+  renderiza una pill por link, cada una con su plataforma
+  auto-detectada (mismo filtro `platformLabel` de D47).
+* Segundo lanzamiento real cargado como ejemplo de uso ("No Estamos
+  Solos", con Spotify + YouTube simultáneos).
+* **Bug real encontrado y corregido en el camino:** el filtro
+  `stripHtml` no decodificaba entidades HTML (`&quot;`), y Nunjucks
+  las volvía a escapar al mostrarlas (`&amp;quot;`, doble-escapado
+  visible en pantalla). Se corrigió decodificando entidades comunes
+  dentro de `stripHtml`, con `&amp;` decodificado al final para evitar
+  decodificar de más.
+* El script de automatización (`npm run new`) también se actualizó:
+  después de los campos principales, pregunta plataformas adicionales
+  en loop hasta que se deja vacío, y genera el bloque YAML `links:`
+  automáticamente.
