@@ -628,3 +628,21 @@ como referencia manual de respaldo.**
   artefacto conocido de Node (el pipe se cierra antes de que el
   programa termine de leer preguntas secuenciales) que no reproduce
   el uso real en una terminal interactiva.
+
+## POST-LANZAMIENTO — Cambio de tipografía
+
+**D52. Tipografía reemplazada: Passion One (títulos) + Google Sans Code
+(todo lo demás: nav, labels, fechas y cuerpo de texto), reemplazando
+Archivo Black + IBM Plex Mono + Inter.**
+
+- Pedido explícito del usuario, con el link de Google Fonts ya
+  provisto para Passion One.
+- Se simplificó de 3 familias a 2: `--font-mono` y `--font-body` ahora
+  apuntan a la misma fuente (Google Sans Code), a pedido de "para el
+  resto" (todo menos títulos).
+- Nota de diseño dejada explícita para el usuario: Google Sans Code es
+  monoespaciada — al aplicarse también al cuerpo de texto (antes solo
+  en nav/labels), el look de párrafos largos cambia notablemente
+  (estilo "técnico/terminal"). No se revirtió preventivamente porque
+  fue un pedido directo, pero se marcó como punto a confirmar tras ver
+  el resultado publicado.
