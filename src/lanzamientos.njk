@@ -13,7 +13,7 @@ permalink: /lanzamientos/
 <section class="page-section">
   <div class="card-grid">
     {% for release in collections.lanzamiento | reverse %}
-      {{ card(release.data.title, release.data.date | formatDate, release.templateContent, "Lanzamiento", "card__tag--lanzamiento", release.data.cover, release.data.streamingUrl) }}
+      {{ card(release.data.title, release.data.date | formatDate, release.templateContent, "Lanzamiento", "card__tag--lanzamiento", release.data.cover, release.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

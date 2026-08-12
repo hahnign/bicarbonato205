@@ -17,13 +17,13 @@ permalink: /archivo/
     <div class="card-grid">
       {% for item in grupo.items %}
         {% if "lanzamiento" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Lanzamiento", "card__tag--lanzamiento", item.data.cover, item.data.streamingUrl) }}
+          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Lanzamiento", "card__tag--lanzamiento", item.data.cover, item.data | collectLinks) }}
         {% elif "video" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Video", "card__tag--video", item.data.cover, item.data.youtubeUrl) }}
+          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Video", "card__tag--video", item.data.cover, item.data | collectLinks) }}
         {% elif "playlist" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Playlist", "card__tag--playlist", null, item.data.url, null, item.data.platform) }}
+          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Playlist", "card__tag--playlist", null, item.data | collectLinks) }}
         {% elif "noticia" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Noticia", "card__tag--noticia", null, null, item.url) }}
+          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Noticia", "card__tag--noticia", null, [], item.url) }}
         {% endif %}
       {% endfor %}
     </div>

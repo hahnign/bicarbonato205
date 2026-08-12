@@ -19,7 +19,7 @@ layout: layouts/base.njk
   <h2 class="page-section__heading">También te puede interesar</h2>
   <div class="card-grid">
     {% for item in collections.playlist | relatedItems(page.url, 3) %}
-      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Playlist", "card__tag--playlist", null, item.data.url, null, item.data.platform) }}
+      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Playlist", "card__tag--playlist", null, item.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

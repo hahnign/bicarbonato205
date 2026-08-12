@@ -28,7 +28,7 @@ layout: layouts/base.njk
   <h2 class="page-section__heading">También te puede interesar</h2>
   <div class="card-grid">
     {% for item in collections.video | relatedItems(page.url, 3) %}
-      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Video", "card__tag--video", item.data.cover, item.data.youtubeUrl) }}
+      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Video", "card__tag--video", item.data.cover, item.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

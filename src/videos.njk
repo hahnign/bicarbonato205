@@ -13,7 +13,7 @@ permalink: /videos/
 <section class="page-section">
   <div class="card-grid">
     {% for video in collections.video | reverse %}
-      {{ card(video.data.title, video.data.date | formatDate, video.templateContent, "Video", "card__tag--video", video.data.cover, video.data.youtubeUrl) }}
+      {{ card(video.data.title, video.data.date | formatDate, video.templateContent, "Video", "card__tag--video", video.data.cover, video.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

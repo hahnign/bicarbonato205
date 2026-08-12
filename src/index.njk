@@ -12,10 +12,10 @@ title: Inicio
   <h2 class="page-section__heading">Novedades</h2>
   <div class="card-grid">
     {% for release in collections.lanzamiento | reverse %}
-      {{ card(release.data.title, release.data.date | formatDate, release.templateContent, "Lanzamiento", "card__tag--lanzamiento", release.data.cover, release.data.streamingUrl) }}
+      {{ card(release.data.title, release.data.date | formatDate, release.templateContent, "Lanzamiento", "card__tag--lanzamiento", release.data.cover, release.data | collectLinks) }}
     {% endfor %}
     {% for video in collections.video | reverse %}
-      {{ card(video.data.title, video.data.date | formatDate, video.templateContent, "Video", "card__tag--video", video.data.cover, video.data.youtubeUrl) }}
+      {{ card(video.data.title, video.data.date | formatDate, video.templateContent, "Video", "card__tag--video", video.data.cover, video.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

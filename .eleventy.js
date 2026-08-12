@@ -123,7 +123,14 @@ module.exports = function (eleventyConfig) {
      descripción cuando el usuario pide "leer más".
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("stripHtml", (content) => {
-    return String(content).replace(/<[^>]*>/g, "").trim();
+    return String(content)
+      .replace(/<[^>]*>/g, "")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&") // siempre al final, evita decodificar de más
+      .trim();
   });
 
   /* ------------------------------------------------------------
@@ -147,6 +154,26 @@ module.exports = function (eleventyConfig) {
       if (regex.test(url)) return label;
     }
     return "Escuchar";
+  });
+
+  /* ------------------------------------------------------------
+     FILTRO: collectLinks
+     Junta TODOS los links externos de un ítem de contenido en una
+     sola lista, sin duplicados: el campo singular viejo
+     (streamingUrl / youtubeUrl / url, según el tipo) más el campo
+     plural nuevo `links` (una lista, para agregar plataformas
+     adicionales). Esto es lo que permite mostrar varias pills
+     (Spotify + YouTube + Deezer + Apple Music...) en una misma
+     tarjeta, sin romper el contenido viejo que solo tiene un link.
+     Uso: {{ item.data | collectLinks }}
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("collectLinks", (data) => {
+    const urls = [];
+    if (data.streamingUrl) urls.push(data.streamingUrl);
+    if (data.youtubeUrl) urls.push(data.youtubeUrl);
+    if (data.url) urls.push(data.url);
+    if (Array.isArray(data.links)) urls.push(...data.links);
+    return [...new Set(urls)];
   });
 
   return {

@@ -35,15 +35,15 @@
   --color-cat-noticias:     #1F7A8C; /* teal */
 
   /* ---------- TIPOGRAFÍA ----------
-     Sin cambios respecto a la Fase 4 por ahora — la decisión de esta
-     ronda fue específicamente sobre color y forma. La familia Archivo
-     Black no necesariamente combina con el espíritu del isotipo real
-     (más "stencil"/banda de rock); queda como punto abierto a revisar
-     si en algún momento se quiere una tipografía de título más acorde
-     al logo oficial. */
-  --font-display: 'Archivo Black', 'Arial Black', sans-serif;
-  --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
-  --font-body:    'Inter', -apple-system, sans-serif;
+     Passion One (títulos) reemplaza a Archivo Black — más afín al
+     isotipo real del logo (Fase de identidad visual). Google Sans
+     Code reemplaza a IBM Plex Mono e Inter para todo lo demás (nav,
+     labels, fechas y cuerpo de texto): una monoespaciada moderna de
+     Google, pensada originalmente para código, usada acá también en
+     párrafos largos como decisión de estilo deliberada. */
+  --font-display: 'Passion One', 'Arial Black', sans-serif;
+  --font-mono:    'Google Sans Code', 'Courier New', monospace;
+  --font-body:    'Google Sans Code', 'Courier New', monospace;
 
   --text-xs:   0.75rem;
   --text-sm:   0.875rem;

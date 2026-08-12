@@ -28,7 +28,7 @@ layout: layouts/base.njk
   <h2 class="page-section__heading">También te puede interesar</h2>
   <div class="card-grid">
     {% for item in collections.lanzamiento | relatedItems(page.url, 3) %}
-      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Lanzamiento", "card__tag--lanzamiento", item.data.cover, item.data.streamingUrl) }}
+      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Lanzamiento", "card__tag--lanzamiento", item.data.cover, item.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>
