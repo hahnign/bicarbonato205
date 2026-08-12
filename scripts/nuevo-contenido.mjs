@@ -102,12 +102,27 @@ async function main() {
 
   const body = (await rl.question("Descripción/texto (Enter para dejar vacío): ")).trim();
 
+  // Links adicionales (Spotify, Deezer, Apple Music, etc.), además del
+  // campo principal (streamingUrl/youtubeUrl/url) ya preguntado arriba.
+  const extraLinks = [];
+  if (type === "lanzamiento" || type === "video") {
+    console.log("\n¿Otras plataformas? (Enter vacío para terminar)");
+    while (true) {
+      const link = (await rl.question(`  Link ${extraLinks.length + 1} (o Enter para terminar): `)).trim();
+      if (!link) break;
+      extraLinks.push(link);
+    }
+  }
+
   const slug = slugify(data.title);
   const frontMatter = fields
     .filter((f) => data[f])
     .map((f) => `${f}: ${formatValue(f, data[f])}`)
     .join("\n");
-  const content = `---\n${frontMatter}\n---\n\n${body}\n`;
+  const linksBlock = extraLinks.length
+    ? `\nlinks:\n${extraLinks.map((l) => `  - "${l}"`).join("\n")}`
+    : "";
+  const content = `---\n${frontMatter}${linksBlock}\n---\n\n${body}\n`;
 
   const dir = path.join("src", folder);
   const filepath = path.join(dir, `${slug}.md`);

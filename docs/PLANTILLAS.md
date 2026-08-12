@@ -16,12 +16,22 @@ date: 2024-01-01
 type: single
 cover: "https://URL-DE-LA-PORTADA.jpg"
 streamingUrl: "https://open.spotify.com/track/xxxx"
+links:
+  - "https://www.youtube.com/watch?v=xxxx"
+  - "https://link.deezer.com/s/xxxx"
+  - "https://music.apple.com/ar/artist/xxxx"
 ---
 
 Descripción corta del tema (opcional, admite Markdown).
 ```
 
 `type` puede ser: `single`, `ep`, o `album`.
+
+`links` es opcional — una lista con tantas plataformas adicionales
+como quieras (YouTube, Deezer, Apple Music, SoundCloud, Bandcamp).
+Cada una se muestra como su propia pill, con el nombre detectado
+automáticamente según la URL. Si el tema solo está en una plataforma,
+alcanza con `streamingUrl` y podés borrar el campo `links` entero.
 
 ---
 
@@ -35,10 +45,15 @@ title: "Nombre del video"
 date: 2024-01-01
 youtubeUrl: "https://www.youtube.com/watch?v=XXXXXXXXXXX"
 cover: "https://i.ytimg.com/vi/XXXXXXXXXXX/maxresdefault.jpg"
+links:
+  - "https://open.spotify.com/track/xxxx"
 ---
 
 Descripción corta del video (opcional).
 ```
+
+`links` es opcional, igual que en Lanzamiento — para sumar plataformas
+además de YouTube.
 
 Tip: la portada de cualquier video de YouTube siempre está en esa
 misma URL, cambiando solo el ID (los 11 caracteres después de `v=`
