@@ -234,27 +234,6 @@
 
 /* ---------- FORMULARIOS ---------- */
 
-.newsletter-form {
-  display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
-}
-
-.newsletter-form input {
-  flex: 1;
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-bg);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-full);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-}
-
-.newsletter-form input::placeholder {
-  color: var(--color-text-faint);
-}
-
 #search-input {
   width: 100%;
   max-width: 480px;
@@ -266,25 +245,6 @@
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: var(--text-base);
-}
-
-.newsletter-form button {
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-accent);
-  border: none;
-  border-radius: var(--radius-full);
-  color: var(--color-text-on-accent);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background var(--transition-fast);
-}
-
-.newsletter-form button:hover {
-  background: var(--color-accent-hover);
 }
 
 /* ---------- FOOTER ---------- */
@@ -299,7 +259,8 @@
 .site-footer__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-8);
+  column-gap: var(--space-16);
+  row-gap: var(--space-8);
   margin-bottom: var(--space-12);
 }
 
@@ -329,6 +290,14 @@
 .site-footer__note {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+}
+
+.site-footer__quote {
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.15;
+  color: var(--color-text);
 }
 
 .site-footer__copyright {
@@ -374,5 +343,4 @@
 @media (max-width: 480px) {
   .card-grid { grid-template-columns: 1fr; }
   .site-nav { gap: var(--space-4); }
-  .newsletter-form { flex-direction: column; }
 }
