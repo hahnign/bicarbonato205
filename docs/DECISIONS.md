@@ -673,3 +673,95 @@ para mostrar varias pills de plataforma en una misma tarjeta (Spotify
   después de los campos principales, pregunta plataformas adicionales
   en loop hasta que se deja vacío, y genera el bloque YAML `links:`
   automáticamente.
+
+## POST-LANZAMIENTO — Footer: espaciado, y newsletter reemplazado por frase
+
+**D54. Columnas del footer: separación horizontal aumentada de 32px a
+64px** (`column-gap` separado de `row-gap` en el grid), a pedido del
+usuario ("Contacto" se sentía muy pegado a la columna del medio).
+
+**D55. La columna de Newsletter se eliminó por completo (formulario,
+CSS, y el `action="#"` placeholder que venía sin conectar desde la
+Fase 6) y se reemplazó por una frase de identidad de marca, en un
+cuarto rol tipográfico nuevo: `--font-accent` (Amatic SC, cursiva).**
+
+- Por qué: decisión directa del usuario — no van a mandar mails, así
+  que un newsletter sin implementar no aporta nada y ocupa espacio.
+- El texto vive en `_data/site.json` (`footerQuote`), no hardcodeado
+  en el template — mismo principio de separar contenido de estructura
+  que se viene aplicando desde la Fase 1.
+- Se verificó explícitamente que no quedara CSS/JS muerto de
+  `newsletter-form` en ningún otro archivo antes de eliminarlo.
+
+## POST-LANZAMIENTO — Hero con logo, footer de 4 columnas, bio en Acerca
+
+**D56. Padding vertical del hero reducido de 64px fijos a 32px en
+mobile (64px se mantiene desde 1024px de ancho).**
+
+- Por qué: en celular quedaba demasiado separado del header y del
+  contenido — pedido explícito del usuario tras verlo en uso real.
+
+**D57. Logo circular agregado al hero de Inicio, junto al título**
+(`.page-hero__brand`: columna en mobile, fila en desktop desde
+1024px), estilo inspirado en el header de un canal de YouTube (avatar
+
+- título grande al lado).
+
+* El recorte circular es 100% CSS (`border-radius: 50%` sobre una
+  imagen cuadrada) — no se editó el archivo de imagen. Esto es lo que
+  permite que "afuera del círculo" sea transparente y se adapte solo a
+  modo claro/oscuro, sin depender de ningún trabajo de diseño extra.
+* Verificado con un recorte de prueba (Pillow) antes de implementar,
+  para confirmar que el diseño real del logo no perdía letras
+  importantes en las esquinas del círculo.
+
+**D58. Footer reestructurado a 4 columnas: [Streaming + Contacto
+agrupadas, ~1/3 del ancho] + [Frase] + [Logo circular, mismo criterio
+que D57].**
+
+- Streaming y Contacto viven en un `.site-footer__group` con su propio
+  grid interno de 2 columnas, más pegadas entre sí que la separación
+  general del footer (`column-gap` interno menor al del grid externo).
+
+**D59. Bio completa cargada en `_data/site.json` (`bio`), mostrada en
+Acerca (reemplaza `site.description` genérica) — NO en el hero de
+Inicio.**
+
+- Decisión (con recomendación explícita dada al usuario, aceptada):
+  el hero de Inicio prioriza una primera impresión rápida (definido
+  desde la Fase 1); un párrafo largo de biografía le compite ese
+  objetivo. Acerca es la página de Biografía real del sitemap
+  original — es su lugar natural.
+- **Bug real encontrado y corregido en el camino:** el párrafo de bio
+  se había puesto inicialmente con la clase `.card__desc`, que desde
+  D49 tiene recorte a 3 líneas (`-webkit-line-clamp`) pensado para
+  tarjetas — hubiera cortado la bio sin querer. Se creó una clase
+  nueva (`.page-text`) para texto de página completa, sin ese recorte.
+
+## POST-LANZAMIENTO — Hero: logo y título en fila también en mobile
+
+**D60. `.page-hero__brand` pasó de columna-en-mobile/fila-en-desktop a
+fila siempre, con el logo más chico en mobile (56px vs 110px en
+desktop) y `flex-shrink: 0` para que no se deforme.**
+
+- Por qué: en mobile, el layout en columna hacía que el logo y el
+  título se vieran "separados por un enter" — pedido explícito del
+  usuario de que queden uno al lado del otro en cualquier tamaño de
+  pantalla.
+
+## POST-LANZAMIENTO — line-height de títulos grandes (bug de raíz)
+
+**D61. Ningún título con `--font-display` tenía `line-height` propio —
+todos heredaban el `1.5` de `body`, pensado para párrafos. En títulos
+grandes que saltan a 2+ líneas (como el hero en mobile), eso deja un
+espacio excesivo entre renglones, rompiendo la sensación de "bloque
+compacto" con el logo al lado.**
+
+- Corregido en las cuatro reglas que usan `--font-display`:
+  `.page-hero__title` (1.05), `.page-section__heading` (1.1),
+  `.site-header__logo` (1.1), `.card__title` (1.15) — valores más
+  ajustados cuanto más grande es el texto.
+- Se corrigieron las cuatro juntas (no solo el hero, que fue el
+  síntoma reportado) porque es la misma causa raíz — evita que el
+  mismo bug aparezca después en cualquier otro título que salte a más
+  de una línea.
