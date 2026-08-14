@@ -331,6 +331,67 @@
   padding-top: var(--space-6);
 }
 
+/* ---------- PÁGINA DE DETALLE (Lanzamiento/Video/Playlist) ----------
+   Mismo lenguaje visual que .card (superficie, borde, radio, sombra),
+   pero más grande — es la página dedicada a un solo ítem, no una
+   tarjeta entre muchas. La descripción se muestra completa (sin el
+   recorte/botón "Más" de .card__desc, que tiene sentido en una grilla
+   pero no en la página propia del contenido). */
+
+.detail-card {
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-8);
+  max-width: 640px;
+}
+
+.detail-card__cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+  background: var(--color-surface-alt);
+}
+
+.detail-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
+  margin: var(--space-2) 0 var(--space-4);
+}
+
+.detail-card__desc {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.detail-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.detail__siblings {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  max-width: 640px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.detail__siblings a:hover {
+  color: var(--color-accent);
+}
+
 /* ---------- SECCIONES DE PÁGINA ---------- */
 
 .page-hero {

@@ -39,7 +39,7 @@ const searchInput = document.getElementById("search-input");
 if (searchInput) {
   let index = [];
 
-  fetch("/search-index.json")
+  fetch(searchInput.dataset.searchIndex)
     .then((res) => res.json())
     .then((data) => {
       index = data;

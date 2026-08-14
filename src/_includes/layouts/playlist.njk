@@ -4,15 +4,21 @@ layout: layouts/base.njk
 {% from "macros/card.njk" import card %}
 
 <article class="page-section container">
-  <span class="card__tag card__tag--playlist">Playlist</span>
-  <h1 class="page-hero__title">{{ title }}</h1>
-  <p class="card__meta">{{ date | formatDate }} — {{ platform }}</p>
+  <div class="detail-card">
+    <span class="card__tag card__tag--playlist">Playlist</span>
+    <h1 class="detail-card__title">{{ title }}</h1>
+    <p class="card__meta">{{ date | formatDate }} — {{ platform }}</p>
+    <div class="detail-card__desc">{{ content | safe }}</div>
 
-  <div class="detail__body">{{ content | safe }}</div>
-
-  {% if url %}
-    <a class="btn" href="{{ url }}">Escuchar en {{ platform }} →</a>
-  {% endif %}
+    {% set links = { url: url, links: links } | collectLinks %}
+    {% if links.length %}
+      <div class="detail-card__actions">
+        {% for link in links %}
+          <a class="btn btn--sm btn--pill" href="{{ link }}">{{ link | platformLabel }} →</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 </article>
 
 <section class="page-section">

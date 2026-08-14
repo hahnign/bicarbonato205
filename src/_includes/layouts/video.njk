@@ -4,17 +4,24 @@ layout: layouts/base.njk
 {% from "macros/card.njk" import card %}
 
 <article class="page-section container">
-  <span class="card__tag card__tag--video">Video</span>
-  <h1 class="page-hero__title">{{ title }}</h1>
-  <p class="card__meta">{{ date | formatDate }}</p>
+  <div class="detail-card">
+    {% if cover %}
+      <img src="{{ cover }}" alt="{{ title }}" decoding="async" class="detail-card__cover">
+    {% endif %}
+    <span class="card__tag card__tag--video">Video</span>
+    <h1 class="detail-card__title">{{ title }}</h1>
+    <p class="card__meta">{{ date | formatDate }}</p>
+    <div class="detail-card__desc">{{ content | safe }}</div>
 
-  {% if cover %}<img src="{{ cover }}" alt="{{ title }}" decoding="async">{% endif %}
-
-  <div class="detail__body">{{ content | safe }}</div>
-
-  {% if youtubeUrl %}
-    <a class="btn" href="{{ youtubeUrl }}">Ver en YouTube →</a>
-  {% endif %}
+    {% set links = { youtubeUrl: youtubeUrl, links: links } | collectLinks %}
+    {% if links.length %}
+      <div class="detail-card__actions">
+        {% for link in links %}
+          <a class="btn btn--sm btn--pill" href="{{ link }}">{{ link | platformLabel }} →</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 
   {% set prev = collections.video | siblingItem(page.url, "prev") %}
   {% set next = collections.video | siblingItem(page.url, "next") %}
