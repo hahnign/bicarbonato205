@@ -765,3 +765,50 @@ compacto" con el logo al lado.**
   síntoma reportado) porque es la misma causa raíz — evita que el
   mismo bug aparezca después en cualquier otro título que salte a más
   de una línea.
+
+## POST-LANZAMIENTO — Bug real: la búsqueda estaba rota en producción
+
+**D62. `fetch("/search-index.json")` en `main.js` era una ruta absoluta
+escrita a mano, ajena al `pathPrefix` — apuntaba a la raíz del dominio
+en vez de `/bicarbonato205/`. La búsqueda estaba rota en producción
+desde que se agregó `pathPrefix` (fix de deploy, mensaje "el sitio no
+se veía con estilos").**
+
+- Causa: el HTML transform automático de Eleventy (que corrige rutas
+  con `pathPrefix`) solo reescribe atributos `href`/`src` dentro de
+  HTML — nunca toca strings dentro de archivos `.js`.
+- Detectado al explicarle al usuario cómo funciona la búsqueda y
+  decidir verificarla con el estado actual del proyecto, en vez de
+  asumir que seguía funcionando desde la Fase 7.
+- Fix: la ruta correcta (`{{ '/search-index.json' | url }}`, que sí
+  respeta `pathPrefix` por ser un valor calculado en la plantilla) se
+  pasa desde `buscar.njk` al input vía `data-search-index`, y
+  `main.js` la lee de ahí en vez de tenerla hardcodeada.
+- Lección general para el proyecto: cualquier ruta interna referenciada
+  desde JavaScript puro necesita este mismo patrón (pasarla desde el
+  HTML vía atributo `data-*`, calculada con el filtro `url`), nunca
+  escribirla directamente como string en un `.js`.
+
+## POST-LANZAMIENTO — Páginas de detalle rediseñadas como tarjeta grande
+
+**D63. Los layouts de detalle (`release.njk`, `video.njk`,
+`playlist.njk`) tenían la imagen de portada sin ningún límite de
+tamaño (se veía "descomunal") y usaban el sistema viejo de un solo
+link de acción, sin el soporte de múltiples plataformas agregado en
+D53. Reescritos con un nuevo componente `.detail-card`.**
+
+- Imagen contenida a `max-width: 640px`, proporción 16:9 (mismo
+  criterio que D47, pero más grande que una tarjeta de grilla) —
+  resuelve el problema real reportado por el usuario.
+- Envuelto en una tarjeta con el mismo lenguaje visual que `.card`
+  (superficie, borde, radio, sombra), pero a mayor escala — es la
+  página dedicada de un solo ítem, no una entre muchas.
+- Descripción completa, sin el recorte/botón "Más" de `.card__desc`
+  (con sentido en grilla, no en una página dedicada) — nueva clase
+  `.detail-card__desc`.
+- Los pills de acción ahora usan `collectLinks` (como las tarjetas),
+  mostrando TODAS las plataformas del ítem, no solo la primera —
+  corrige que esas páginas se habían quedado con el sistema de un
+  solo link tras el cambio de D53, que en su momento solo tocó la
+  sección de relacionados de estos mismos layouts, no su bloque
+  principal.
