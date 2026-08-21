@@ -812,3 +812,13 @@ D53. Reescritos con un nuevo componente `.detail-card`.**
   solo link tras el cambio de D53, que en su momento solo tocó la
   sección de relacionados de estos mismos layouts, no su bloque
   principal.
+
+## POST-LANZAMIENTO — Padding del hero en desktop, a la mitad
+
+**D64. Padding vertical del hero en desktop (≥1024px) reducido de 64px
+a 32px (la mitad), quedando igual al valor de mobile por coincidencia
+de la escala de espaciado. Mobile sin cambios.**
+
+- Se eliminó la media query que fijaba el valor de desktop, ya que
+  ahora coincide con la regla base — dejarla hubiera sido código
+  redundante sin ningún efecto real.
