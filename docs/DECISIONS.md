@@ -822,3 +822,45 @@ de la escala de espaciado. Mobile sin cambios.**
 - Se eliminó la media query que fijaba el valor de desktop, ya que
   ahora coincide con la regla base — dejarla hubiera sido código
   redundante sin ningún efecto real.
+
+## POST-LANZAMIENTO — Íconos SVG, frase de marca reutilizable, hero con descripción
+
+**D65. Íconos de Buscar y de modo oscuro/claro: de texto/emoji a SVG
+inline con `fill/stroke: currentColor`.**
+
+- Por qué "currentColor": el ícono hereda automáticamente el color de
+  texto del tema activo (claro/oscuro) sin necesitar dos archivos de
+  ícono distintos — resuelve el pedido de "que cambie con el modo
+  claro/oscuro" de la forma más simple posible.
+- Solo se usa el ícono de luna en ambos estados del toggle (no hay
+  ícono de sol distinto provisto) — el ícono no cambia, solo el
+  `aria-label` según el modo activo.
+
+**D66. Clase `.brand-quote` (nueva) reemplaza a `.site-footer__quote`:
+de Amatic SC cursiva a Google Sans Code mono en mayúsculas, igual
+tratamiento visual que el heading "STREAMING" del footer, pero más
+grande.**
+
+- Se aplicó `text-transform: uppercase` explícitamente porque el
+  pedido fue "como está escrito STREAMING", que también está en
+  mayúsculas — no es solo la tipografía.
+- Amatic SC se eliminó del proyecto por completo (variable
+  `--font-accent` y su import de Google Fonts) al quedar sin ningún
+  uso — una fuente menos para descargar.
+
+**D67. La misma frase (`brand-quote`) ahora aparece también en el hero
+de Inicio, debajo del avatar+título — imita la estructura de un header
+de canal/perfil (avatar, nombre, línea de descripción debajo), a
+pedido del usuario con una captura de referencia de YouTube.**
+
+- Aclarado explícitamente: no se agregó una imagen de banner/foto de
+  banda arriba del avatar (como sí tiene la referencia) — no había
+  ese archivo disponible; queda pendiente si el usuario lo provee.
+
+## POST-LANZAMIENTO — Hero: título y frase alineados en la misma columna
+
+**D68. La frase (`brand-quote`) estaba como hermana del bloque
+avatar+título, no dentro de él — arrancaba pegada al borde izquierdo
+de toda la sección (debajo del avatar) en vez de debajo del título.
+Se movió a una columna de texto nueva (`.page-hero__text`, flex
+column) junto al título, ambos alineados a la izquierda entre sí.**
