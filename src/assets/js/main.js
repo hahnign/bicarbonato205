@@ -10,11 +10,9 @@
 // script bloqueante del <head> (evita el flash); acá solo manejamos
 // el click y la persistencia.
 const themeToggle = document.getElementById("theme-toggle");
-const themeIcon = document.querySelector("[data-theme-icon]");
 
 function updateThemeIcon() {
   const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-  if (themeIcon) themeIcon.textContent = isDark ? "☀️" : "🌙";
   if (themeToggle) {
     themeToggle.setAttribute("aria-label", isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
   }

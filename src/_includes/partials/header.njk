@@ -2,9 +2,16 @@
   <div class="site-header__top">
     <a href="/" class="site-header__logo">{{ site.name }}</a>
     <p class="site-header__tagline">{{ site.tagline }}</p>
-    <a href="/buscar/" class="site-header__search">Buscar</a>
+    <a href="/buscar/" class="site-header__search" aria-label="Buscar">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="7"></circle>
+        <line x1="20.5" y1="20.5" x2="15.2" y2="15.2"></line>
+      </svg>
+    </a>
     <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar a modo oscuro">
-      <span aria-hidden="true" data-theme-icon>🌙</span>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-theme-icon>
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
     </button>
   </div>
   {% include "partials/nav.njk" %}
