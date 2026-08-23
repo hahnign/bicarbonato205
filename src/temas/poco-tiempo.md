@@ -10,4 +10,5 @@ links:
 
 El clásico de Bicarbonato205, 30 años después. Fue el primer tema de la
 banda, y merecía ser el primero de este retorno en envase renovado.
-Parte del álbum *MAMÁ TOWN*.
+<br/>
+Este tema lo encontrás en nuestro álbum _MAMÁ TOWN_.

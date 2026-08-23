@@ -1,6 +1,22 @@
 const { rssPlugin } = require("@11ty/eleventy-plugin-rss");
+const markdownIt = require("markdown-it");
 
 module.exports = function (eleventyConfig) {
+
+  /* ------------------------------------------------------------
+     MARKDOWN: saltos de línea automáticos (breaks: true)
+     Por defecto, Markdown ignora los saltos de línea "sueltos" dentro
+     de un mismo párrafo (los colapsa en un espacio) — solo respeta
+     salto de línea real si dejás una línea en blanco (nuevo párrafo)
+     o dos espacios invisibles al final de la línea (frágil, se pierde
+     fácil al editar). Con breaks:true, cualquier salto de línea que
+     escribas en el .md se respeta tal cual, sin ese truco.
+     ------------------------------------------------------------ */
+  eleventyConfig.setLibrary("md", markdownIt({
+    html: true,
+    breaks: true,
+    linkify: true,
+  }));
 
   eleventyConfig.addPlugin(rssPlugin);
 
