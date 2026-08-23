@@ -1,21 +1,16 @@
 ---
 layout: layouts/base.njk
-title: Inicio
+title: Temas
+permalink: /temas/
 ---
 {% from "macros/card.njk" import card %}
 
 <section class="page-hero">
-  <div class="page-hero__brand">
-    <img src="/assets/img/logo-avatar.png" alt="" class="page-hero__avatar">
-    <div class="page-hero__text">
-      <h1 class="page-hero__title">{{ site.tagline }}</h1>
-      <p class="brand-quote">{{ site.footerQuote }}</p>
-    </div>
-  </div>
+  <h1 class="page-hero__title">Temas</h1>
+  <p class="card__meta">Singles, EPs y álbumes — con su video, cuando lo tienen.</p>
 </section>
 
 <section class="page-section">
-  <h2 class="page-section__heading">Novedades</h2>
   <div class="card-grid">
     {% for tema in collections.tema | reverse %}
       {{ card(tema.data.title, tema.data.date | formatDate, tema.templateContent, "Tema", "card__tag--tema", tema.data.cover, tema.data | collectLinks) }}

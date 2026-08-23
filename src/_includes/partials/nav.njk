@@ -1,13 +1,12 @@
 {#
-  Navegación principal. 7 ítems por decisión explícita (ver DECISIONS.md,
-  Fase 6). aria-current="page" comunica el link activo a lectores de
+  Navegación principal. 6 ítems ahora (Videos se fusionó dentro de
+  Temas). aria-current="page" comunica el link activo a lectores de
   pantalla; is-active es solo la clase visual para el estilo CSS.
 #}
 <nav class="site-nav">
   <a href="/" class="site-nav__link {% if page.url == '/' %}is-active{% endif %}" {% if page.url == '/' %}aria-current="page"{% endif %}>Inicio</a>
   <a href="/archivo/" class="site-nav__link {% if page.url == '/archivo/' %}is-active{% endif %}" {% if page.url == '/archivo/' %}aria-current="page"{% endif %}>Archivo</a>
-  <a href="/lanzamientos/" class="site-nav__link {% if page.url == '/lanzamientos/' %}is-active{% endif %}" {% if page.url == '/lanzamientos/' %}aria-current="page"{% endif %}>Lanzamientos</a>
-  <a href="/videos/" class="site-nav__link {% if page.url == '/videos/' %}is-active{% endif %}" {% if page.url == '/videos/' %}aria-current="page"{% endif %}>Videos</a>
+  <a href="/temas/" class="site-nav__link {% if page.url == '/temas/' %}is-active{% endif %}" {% if page.url == '/temas/' %}aria-current="page"{% endif %}>Temas</a>
   <a href="/playlists/" class="site-nav__link {% if page.url == '/playlists/' %}is-active{% endif %}" {% if page.url == '/playlists/' %}aria-current="page"{% endif %}>Playlists</a>
   <a href="/streaming/" class="site-nav__link {% if page.url == '/streaming/' %}is-active{% endif %}" {% if page.url == '/streaming/' %}aria-current="page"{% endif %}>Streaming</a>
   <a href="/acerca/" class="site-nav__link {% if page.url == '/acerca/' %}is-active{% endif %}" {% if page.url == '/acerca/' %}aria-current="page"{% endif %}>Acerca</a>

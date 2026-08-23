@@ -864,3 +864,34 @@ avatar+título, no dentro de él — arrancaba pegada al borde izquierdo
 de toda la sección (debajo del avatar) en vez de debajo del título.
 Se movió a una columna de texto nueva (`.page-hero__text`, flex
 column) junto al título, ambos alineados a la izquierda entre sí.**
+
+## POST-LANZAMIENTO — Fusión de Lanzamientos + Videos en "Temas"
+
+**D69. Los tipos de contenido "lanzamiento" y "video" se fusionaron en
+un único tipo "tema" — un tema tiene portada, streaming y opcionalmente
+un video, todo en una sola entrada de contenido, no dos separadas.**
+
+- Por qué: cada canción real del proyecto (Poco Tiempo, No Estamos
+  Solos) ya vivía repetida en dos lugares — el sistema `links` de D53
+  ya permitía múltiples plataformas por ítem, así que mantener
+  "lanzamiento" y "video" como colecciones separadas era redundante
+  una vez que ese sistema existía.
+- Renombrado completo, no solo el texto visible: carpeta
+  `src/lanzamientos/` → `src/temas/`, tag `lanzamiento` → `tema`,
+  colección `collections.lanzamiento` → `collections.tema`, clase CSS
+  `card__tag--lanzamiento` → `card__tag--tema`, variable de color
+  `--color-cat-lanzamientos` → `--color-cat-tema`, layout
+  `release.njk` → `tema.njk`, página `/lanzamientos/` → `/temas/`.
+- El tipo "video" se eliminó por completo (carpeta, layout, página de
+  listado, ítem de nav, filtro en la colección `archivo`) — un video
+  ahora es simplemente uno de los links de un tema.
+- Contenido real migrado: "Poco Tiempo" (video, antes en
+  `videos/poco-tiempo-video-oficial.md`) se fusionó dentro de
+  `temas/poco-tiempo.md`, agregando su YouTube a `links` — ya no hay
+  dos entradas para la misma canción.
+- Navegación: de 6 ítems a 6 ítems, pero cambia la composición
+  (Lanzamientos + Videos → un solo Temas), liberando espacio
+  conceptual en el menú.
+- **Pendiente explícito, no resuelto en este cambio:** `README.md` y
+  `docs/PLANTILLAS.md` todavía documentan Lanzamientos y Videos como
+  tipos separados — quedan desactualizados hasta la próxima revisión.

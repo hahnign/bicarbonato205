@@ -140,8 +140,7 @@
   margin-bottom: var(--space-3);
 }
 
-.card__tag--lanzamiento { background: var(--color-cat-lanzamientos); }
-.card__tag--video       { background: var(--color-cat-videos); }
+.card__tag--tema        { background: var(--color-cat-tema); }
 .card__tag--playlist    { background: var(--color-cat-playlists); }
 .card__tag--noticia     { background: var(--color-cat-noticias); }
 

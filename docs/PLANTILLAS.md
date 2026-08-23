@@ -5,9 +5,9 @@ para copiar el bloque que necesites.
 
 ---
 
-## Lanzamiento (single / EP / álbum)
+## Tema (single / EP / álbum — con o sin video)
 
-Archivo: `src/lanzamientos/NOMBRE-DEL-ARCHIVO.md`
+Archivo: `src/temas/NOMBRE-DEL-ARCHIVO.md`
 
 ```markdown
 ---
@@ -30,34 +30,14 @@ Descripción corta del tema (opcional, admite Markdown).
 `links` es opcional — una lista con tantas plataformas adicionales
 como quieras (YouTube, Deezer, Apple Music, SoundCloud, Bandcamp).
 Cada una se muestra como su propia pill, con el nombre detectado
-automáticamente según la URL. Si el tema solo está en una plataforma,
-alcanza con `streamingUrl` y podés borrar el campo `links` entero.
+automáticamente según la URL. Si el tema tiene video, el link de
+YouTube va acá adentro, no en un archivo separado — no hay un tipo de
+contenido "Video" propio, un tema con video es solo un tema con un
+link de YouTube más en `links`.
 
----
-
-## Video
-
-Archivo: `src/videos/NOMBRE-DEL-ARCHIVO.md`
-
-```markdown
----
-title: "Nombre del video"
-date: 2024-01-01
-youtubeUrl: "https://www.youtube.com/watch?v=XXXXXXXXXXX"
-cover: "https://i.ytimg.com/vi/XXXXXXXXXXX/maxresdefault.jpg"
-links:
-  - "https://open.spotify.com/track/xxxx"
----
-
-Descripción corta del video (opcional).
-```
-
-`links` es opcional, igual que en Lanzamiento — para sumar plataformas
-además de YouTube.
-
-Tip: la portada de cualquier video de YouTube siempre está en esa
-misma URL, cambiando solo el ID (los 11 caracteres después de `v=`
-en el link del video).
+Tip: la portada de cualquier video de YouTube siempre está en
+`https://i.ytimg.com/vi/ID-DEL-VIDEO/maxresdefault.jpg`, cambiando
+solo el ID (los 11 caracteres después de `v=` en el link del video).
 
 ---
 
@@ -96,7 +76,8 @@ Texto de la noticia.
 ## Reglas generales
 
 - El nombre del archivo (`NOMBRE-DEL-ARCHIVO.md`) no importa para el
-  sitio — usalo solo para identificarlo vos (ej: `poco-tiempo.md`).
+  sitio — usalo solo para identificarlo vos (ej: `poco-tiempo.md`,
+  dentro de `src/temas/`).
 - `date` en formato `AAAA-MM-DD`.
 - Después de crear el archivo: `npm run dev` para verlo en local, y
   cuando esté bien, `git add`, `git commit`, `git push`.

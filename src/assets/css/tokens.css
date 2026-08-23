@@ -29,8 +29,7 @@
   /* ---------- COLOR: CATEGORÍAS (etiquetas de contenido) ----------
      Uso exclusivo en badges de tipo de contenido, nunca como acento
      de marca ni en botones/CTAs — ese rol es solo de --color-accent. */
-  --color-cat-lanzamientos: #B50000; /* mismo rojo: lanzamiento = núcleo del proyecto */
-  --color-cat-videos:       #B8690F; /* ámbar/naranja quemado */
+  --color-cat-tema:         #B50000; /* mismo rojo de marca: tema = núcleo del proyecto */
   --color-cat-playlists:    #7B3FA0; /* violeta */
   --color-cat-noticias:     #1F7A8C; /* teal */
 

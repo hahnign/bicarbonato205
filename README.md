@@ -7,8 +7,8 @@ GitHub Pages. Filosofía del proyecto: publicar poco, publicar bien, mantenerlo
 simple.
 
 Para el razonamiento detrás de cada decisión técnica y de diseño, ver
-[`docs/DECISIONS.md`](docs/DECISIONS.md) — este README explica _cómo usar_
-el proyecto; ese archivo explica _por qué_ se construyó así.
+[`docs/DECISIONS.md`](docs/DECISIONS.md) — este README explica *cómo usar*
+el proyecto; ese archivo explica *por qué* se construyó así.
 
 ---
 
@@ -49,8 +49,7 @@ bicarbonato205/
     ├── _includes/
     │   ├── layouts/
     │   │   ├── base.njk        # Layout maestro (head, header, footer)
-    │   │   ├── release.njk     # Layout de detalle de un lanzamiento
-    │   │   ├── video.njk       # Layout de detalle de un video
+    │   │   ├── tema.njk        # Layout de detalle de un tema (canción, con o sin video)
     │   │   ├── playlist.njk    # Layout de detalle de una playlist
     │   │   └── noticia.njk     # Layout de detalle de una noticia
     │   ├── partials/
@@ -67,14 +66,12 @@ bicarbonato205/
     │   ├── js/
     │   │   └── main.js         # Búsqueda client-side (única lógica JS del sitio)
     │   └── img/                # Favicons, íconos, imagen social por defecto
-    ├── lanzamientos/           # Un archivo .md por single/EP/álbum
-    ├── videos/                 # Un archivo .md por videoclip
+    ├── temas/                  # Un archivo .md por canción (con o sin video)
     ├── playlists/              # Un archivo .md por playlist
     ├── noticias/               # Un archivo .md por noticia breve
     ├── index.njk               # Inicio
     ├── archivo.njk             # Archivo (todo el contenido, agrupado por año)
-    ├── lanzamientos.njk        # Listado de lanzamientos
-    ├── videos.njk               # Listado de videos
+    ├── temas.njk               # Listado de temas
     ├── playlists.njk            # Listado de playlists
     ├── streaming.njk            # Accesos a plataformas
     ├── acerca.njk                # Biografía
@@ -94,25 +91,24 @@ bicarbonato205/
 ### La forma automática (recomendada)
 
 ```bash
-npm run new -- lanzamiento
-npm run new -- video
+npm run new -- tema
 npm run new -- playlist
 npm run new -- noticia
 ```
 
-Te va a preguntar los datos uno por uno. Para lanzamientos y videos, si
-pegás un link de YouTube al principio, completa **título** y
-**portada** automáticamente (sin API key, usa el servicio público de
-YouTube) — vos solo completás lo que falta.
+Te va a preguntar los datos uno por uno. Para un tema, si pegás un
+link de YouTube al principio, completa **título** y **portada**
+automáticamente (sin API key, usa el servicio público de YouTube) —
+vos solo completás lo que falta.
 
 ### La forma manual
 
 Ver [`docs/PLANTILLAS.md`](docs/PLANTILLAS.md) para copiar y pegar el
 front matter de cada tipo de contenido a mano.
 
-### Un lanzamiento nuevo (detalle del formato)
+### Un tema nuevo (detalle del formato)
 
-Creá un archivo en `src/lanzamientos/`, por ejemplo `mi-nuevo-single.md`:
+Creá un archivo en `src/temas/`, por ejemplo `mi-nuevo-single.md`:
 
 ```markdown
 ---
@@ -121,19 +117,22 @@ date: 2026-09-01
 type: single
 cover: "https://tu-cdn/portada.jpg"
 streamingUrl: "https://open.spotify.com/track/xxxx"
+links:
+  - "https://www.youtube.com/watch?v=xxxx"
 ---
 
-Descripción o nota sobre el lanzamiento (opcional, admite Markdown).
+Descripción o nota sobre el tema (opcional, admite Markdown).
 ```
 
 `git add`, `git commit`, `git push`. Eso es todo — aparece automáticamente en
-Inicio, Lanzamientos y Archivo, sin tocar ningún otro archivo.
+Inicio, Temas y Archivo, sin tocar ningún otro archivo. Si el tema
+tiene video, el link de YouTube va en `links` — no hay un tipo de
+contenido "Video" separado.
 
-### Un video, playlist o noticia
+### Una playlist o noticia
 
-Mismo patrón, en `src/videos/`, `src/playlists/` o `src/noticias/`
-respectivamente. Los campos de cada tipo están documentados en
-`docs/DECISIONS.md` (Fase 7, sección "Modelo de datos").
+Mismo patrón, en `src/playlists/` o `src/noticias/` respectivamente.
+Los campos de cada tipo están documentados en `docs/PLANTILLAS.md`.
 
 ---
 
@@ -154,7 +153,7 @@ respectivamente. Los campos de cada tipo están documentados en
 1. Cloná el repositorio con otro nombre.
 2. Reemplazá `src/assets/css/tokens.css` con la nueva paleta/tipografía.
 3. Reemplazá `src/_data/site.json` con los datos del nuevo proyecto.
-4. Reemplazá los archivos de ejemplo en `lanzamientos/`, `videos/`, etc. por
+4. Reemplazá los archivos de ejemplo en `temas/`, `playlists/`, etc. por
    contenido real (o dejalos vacíos si el nuevo sitio no necesita ese tipo
    de contenido — simplemente borrá la carpeta y su referencia en
    `.eleventy.js` y en la navegación).

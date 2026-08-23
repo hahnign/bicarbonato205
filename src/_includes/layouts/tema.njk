@@ -8,7 +8,7 @@ layout: layouts/base.njk
     {% if cover %}
       <img src="{{ cover }}" alt="{{ title }}" decoding="async" class="detail-card__cover">
     {% endif %}
-    <span class="card__tag card__tag--lanzamiento">{{ type or "Lanzamiento" }}</span>
+    <span class="card__tag card__tag--tema">{{ type or "Tema" }}</span>
     <h1 class="detail-card__title">{{ title }}</h1>
     <p class="card__meta">{{ date | formatDate }}</p>
     <div class="detail-card__desc">{{ content | safe }}</div>
@@ -23,8 +23,8 @@ layout: layouts/base.njk
     {% endif %}
   </div>
 
-  {% set prev = collections.lanzamiento | siblingItem(page.url, "prev") %}
-  {% set next = collections.lanzamiento | siblingItem(page.url, "next") %}
+  {% set prev = collections.tema | siblingItem(page.url, "prev") %}
+  {% set next = collections.tema | siblingItem(page.url, "next") %}
   <nav class="detail__siblings">
     {% if prev %}<a href="{{ prev.url }}">← {{ prev.data.title }}</a>{% endif %}
     {% if next %}<a href="{{ next.url }}">{{ next.data.title }} →</a>{% endif %}
@@ -34,8 +34,8 @@ layout: layouts/base.njk
 <section class="page-section">
   <h2 class="page-section__heading">También te puede interesar</h2>
   <div class="card-grid">
-    {% for item in collections.lanzamiento | relatedItems(page.url, 3) %}
-      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Lanzamiento", "card__tag--lanzamiento", item.data.cover, item.data | collectLinks) }}
+    {% for item in collections.tema | relatedItems(page.url, 3) %}
+      {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Tema", "card__tag--tema", item.data.cover, item.data | collectLinks) }}
     {% endfor %}
   </div>
 </section>

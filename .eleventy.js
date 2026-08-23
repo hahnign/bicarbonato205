@@ -44,15 +44,14 @@ module.exports = function (eleventyConfig) {
 
   /* ------------------------------------------------------------
      COLECCIÓN CUSTOM: archivo
-     Combina las tres colecciones por tag (lanzamiento, video,
-     playlist) en una sola línea de tiempo ordenada por fecha
-     descendente. Ninguna colección automática por tag hace esto
-     por sí sola — se necesita una función custom.
+     Combina tres colecciones por tag (tema, playlist, noticia) en
+     una sola línea de tiempo ordenada por fecha descendente.
+     Ninguna colección automática por tag hace esto por sí sola — se
+     necesita una función custom.
      ------------------------------------------------------------ */
   eleventyConfig.addCollection("archivo", (collectionApi) => {
     const items = [
-      ...collectionApi.getFilteredByTag("lanzamiento"),
-      ...collectionApi.getFilteredByTag("video"),
+      ...collectionApi.getFilteredByTag("tema"),
       ...collectionApi.getFilteredByTag("playlist"),
       ...collectionApi.getFilteredByTag("noticia"),
     ];
@@ -62,7 +61,7 @@ module.exports = function (eleventyConfig) {
   /* ------------------------------------------------------------
      FILTRO: limit
      Corta un array a los primeros N elementos.
-     Uso: {{ collections.lanzamiento | reverse | limit(4) }}
+     Uso: {{ collections.tema | reverse | limit(4) }}
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("limit", (arr, n) => arr.slice(0, n));
 
@@ -81,7 +80,7 @@ module.exports = function (eleventyConfig) {
      FILTRO: siblingItem
      Dado un array de una colección y la URL actual, devuelve el
      ítem anterior o siguiente. direction: "prev" | "next".
-     Uso: {% set prev = collections.lanzamiento | siblingItem(page.url, "prev") %}
+     Uso: {% set prev = collections.tema | siblingItem(page.url, "prev") %}
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("siblingItem", (collection, currentUrl, direction) => {
     const idx = collection.findIndex((item) => item.url === currentUrl);
@@ -93,7 +92,7 @@ module.exports = function (eleventyConfig) {
   /* ------------------------------------------------------------
      FILTRO: relatedItems
      Devuelve hasta N ítems de una colección, excluyendo el actual.
-     Uso: {{ collections.lanzamiento | relatedItems(page.url, 3) }}
+     Uso: {{ collections.tema | relatedItems(page.url, 3) }}
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("relatedItems", (collection, currentUrl, limitN = 3) => {
     return collection.filter((item) => item.url !== currentUrl).slice(0, limitN);

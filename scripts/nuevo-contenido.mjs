@@ -2,16 +2,15 @@
 // Script de automatización para crear contenido nuevo (Bicarbonato205)
 //
 // Uso:
-//   npm run new -- lanzamiento
-//   npm run new -- video
+//   npm run new -- tema
 //   npm run new -- playlist
 //   npm run new -- noticia
 //
-// Si es un lanzamiento o video, te pregunta primero el link de
-// YouTube: si lo pegás, completa título y portada automáticamente
-// (vía el servicio oEmbed público de YouTube, sin necesitar API key).
-// Lo que no puede completar solo (fecha, link de streaming,
-// descripción) te lo pregunta uno por uno.
+// Si es un tema, te pregunta primero el link de YouTube: si lo pegás,
+// completa título y portada automáticamente (vía el servicio oEmbed
+// público de YouTube, sin necesitar API key). Lo que no puede
+// completar solo (fecha, link de streaming, descripción) te lo
+// pregunta uno por uno.
 
 import readline from "node:readline/promises";
 import { stdin, stdout } from "node:process";
@@ -21,8 +20,7 @@ import path from "node:path";
 const rl = readline.createInterface({ input: stdin, output: stdout });
 
 const TYPES = {
-  lanzamiento: { folder: "lanzamientos", fields: ["title", "date", "type", "cover", "streamingUrl"] },
-  video:       { folder: "videos",       fields: ["title", "date", "youtubeUrl", "cover"] },
+  tema:        { folder: "temas",       fields: ["title", "date", "type", "cover", "streamingUrl"] },
   playlist:    { folder: "playlists",    fields: ["title", "date", "platform", "url"] },
   noticia:     { folder: "noticias",     fields: ["title", "date"] },
 };
@@ -66,14 +64,15 @@ function formatValue(field, value) {
 async function main() {
   const type = process.argv[2];
   if (!TYPES[type]) {
-    console.log("Uso: npm run new -- <lanzamiento|video|playlist|noticia>");
+    console.log("Uso: npm run new -- <tema|playlist|noticia>");
     process.exit(1);
   }
 
   const { folder, fields } = TYPES[type];
   const data = {};
+  const extraLinks = [];
 
-  if (type === "video" || type === "lanzamiento") {
+  if (type === "tema") {
     const yt = (await rl.question("Link de YouTube (Enter para omitir): ")).trim();
     if (yt) {
       console.log("Buscando datos en YouTube...");
@@ -81,7 +80,7 @@ async function main() {
       if (meta) {
         data.title = meta.title;
         data.cover = meta.cover;
-        if (type === "video") data.youtubeUrl = yt;
+        extraLinks.push(yt); // el link de YouTube se guarda como plataforma adicional
         console.log(`  Encontrado: "${meta.title}"`);
       } else {
         console.log("  No se pudo obtener automáticamente, completá los datos a mano.");
@@ -103,9 +102,8 @@ async function main() {
   const body = (await rl.question("Descripción/texto (Enter para dejar vacío): ")).trim();
 
   // Links adicionales (Spotify, Deezer, Apple Music, etc.), además del
-  // campo principal (streamingUrl/youtubeUrl/url) ya preguntado arriba.
-  const extraLinks = [];
-  if (type === "lanzamiento" || type === "video") {
+  // campo principal (streamingUrl) y del link de YouTube ya cargado arriba.
+  if (type === "tema") {
     console.log("\n¿Otras plataformas? (Enter vacío para terminar)");
     while (true) {
       const link = (await rl.question(`  Link ${extraLinks.length + 1} (o Enter para terminar): `)).trim();
