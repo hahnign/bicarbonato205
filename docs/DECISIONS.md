@@ -895,3 +895,84 @@ un video, todo en una sola entrada de contenido, no dos separadas.**
 - **Pendiente explícito, no resuelto en este cambio:** `README.md` y
   `docs/PLANTILLAS.md` todavía documentan Lanzamientos y Videos como
   tipos separados — quedan desactualizados hasta la próxima revisión.
+
+## POST-LANZAMIENTO — Fusión de Videos y Lanzamientos en "Temas"
+
+**D69. Los tipos de contenido `lanzamiento` y `video` se fusionaron en
+uno solo: `tema` — decisión del usuario, ya que cada canción real
+tiene tanto lanzamiento (streaming) como video, y mantenerlos
+separados significaba cargar el mismo contenido dos veces (ya visto
+con "Poco Tiempo", que vivía duplicado en ambas colecciones).**
+
+- Nombre elegido para la sección: "Temas" (a pedido explícito del
+  usuario, sobre "Lanzamientos" u otra alternativa).
+- `src/lanzamientos/` + `src/videos/` → `src/temas/`. El contenido
+  duplicado de "Poco Tiempo" se fusionó en un solo archivo, con
+  Spotify (`streamingUrl`) y YouTube (`links`) juntos.
+- Layouts de detalle `release.njk` + `video.njk` → un solo
+  `tema.njk`. El campo `youtubeUrl` como campo dedicado desapareció
+  del modelo de datos — el link de YouTube de un tema, si existe, va
+  en `links` como cualquier otra plataforma adicional (mismo sistema
+  de D53).
+- Colección custom `archivo` en `.eleventy.js`: de combinar 4 tags
+  (`lanzamiento`, `video`, `playlist`, `noticia`) a combinar 3
+  (`tema`, `playlist`, `noticia`).
+- Navegación: de 7 a 6 ítems (Videos ya no existe como link separado).
+- CSS: `card__tag--lanzamiento` + `card__tag--video` → una sola clase
+  `card__tag--tema`; mismo criterio en las variables de color de
+  categoría en `tokens.css`.
+- Script de automatización (`npm run new`) y documentación
+  (`docs/PLANTILLAS.md`, `README.md`) actualizados para reflejar el
+  tipo unificado — ya no ofrecen "video" como opción separada; un
+  link de YouTube se carga como plataforma adicional al crear un tema.
+- Verificado con build real: 14 archivos generados, ambos temas reales
+  muestran sus dos plataformas correctamente, sitemap/RSS/búsqueda
+  usan las URLs `/temas/...` nuevas sin rastros de `/lanzamientos/` ni
+  `/videos/`.
+
+## POST-LANZAMIENTO — Saltos de línea automáticos en Markdown
+
+**D70. Se configuró Eleventy para usar `markdown-it` con `breaks: true`
+explícitamente (antes usaba la configuración por defecto de Eleventy,
+sin este flag).**
+
+- Síntoma reportado: en `poco-tiempo.md`, un párrafo escrito en varias
+  líneas (sin línea en blanco entre ellas, solo para comodidad de
+  lectura en el editor) se renderizaba como una sola línea corrida —
+  comportamiento correcto de Markdown estándar (los saltos de línea
+  sueltos se colapsan en un espacio), pero no el resultado que el
+  usuario esperaba.
+- Alternativa descartada: pedirle al usuario que termine cada línea
+  con dos espacios invisibles (la sintaxis "oficial" de Markdown para
+  salto de línea duro) — se descartó por frágil: muchos editores de
+  texto recortan espacios al final de línea automáticamente, rompiendo
+  el formato sin que se note.
+- Fix: `eleventyConfig.setLibrary("md", markdownIt({ html:true,
+breaks:true, linkify:true }))` — con esto, cualquier salto de línea
+  real en el `.md` se respeta como `<br>`, sin necesitar trucos.
+  Verificado que párrafos de una sola línea (No Estamos Solos, bio de
+  Acerca) no se vieron afectados — el cambio solo actúa donde había
+  saltos de línea reales en el origen.
+- Nueva dependencia: `markdown-it` como devDependency explícita (antes
+  Eleventy lo usaba internamente sin que el proyecto pudiera
+  configurarlo directamente).
+
+## POST-LANZAMIENTO — Saltos de línea también en la tarjeta
+
+**D71. `stripHtml` ahora preserva los saltos de línea (`<br>` → `\n`
+de texto real) en vez de eliminarlos junto con el resto del HTML —
+a pedido del usuario, tras confirmar que el fix de D70 (breaks:true)
+solo afectaba la página de detalle, no la tarjeta (que usa `stripHtml`
+para su preview en texto plano).**
+
+- Se agregó `white-space: pre-line` a `.card__desc` — sin esto, un
+  salto de línea de _texto_ (no HTML) tampoco se renderiza visualmente
+  en el navegador; es el mismo problema de fondo que D70, en otra capa.
+- **Bug real encontrado y corregido en el camino:** el HTML que genera
+  markdown-it ya trae un `\n` real después de cada `<br>` — sin
+  normalizar, el reemplazo `<br>` → `\n` duplicaba el salto (quedaban
+  líneas con espacio de más, como si fueran párrafos separados).
+  Se agregó `.replace(/\n{2,}/g, "\n")` para colapsar cualquier
+  secuencia de saltos duplicados a uno solo.
+- Formato como cursiva/negrita sigue sin mostrarse en la tarjeta —
+  eso no cambió, solo los saltos de línea.
