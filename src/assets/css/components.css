@@ -22,8 +22,13 @@
 .site-header__top {
   padding: var(--space-6);
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.site-header__row {
+  display: flex;
+  align-items: center;
   gap: var(--space-4);
 }
 
