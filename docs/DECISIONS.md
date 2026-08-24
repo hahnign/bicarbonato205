@@ -976,3 +976,19 @@ para su preview en texto plano).**
   secuencia de saltos duplicados a uno solo.
 - Formato como cursiva/negrita sigue sin mostrarse en la tarjeta —
   eso no cambió, solo los saltos de línea.
+
+## POST-LANZAMIENTO — Header: lupa y luna alineadas con el logo
+
+**D72. `.site-header__top` tenía logo, tagline y los dos íconos todos
+en una misma fila flex con `align-items: baseline` + `flex-wrap` —
+con texto e íconos SVG mezclados, "baseline" da resultados impredecibles
+(los SVG no tienen línea de base de texto real), y el wrap reordenaba
+todo de forma distinta según el ancho disponible.**
+
+- Fix: se separó en dos niveles — `.site-header__row` (logo + lupa +
+  luna, `align-items: center`, la lupa/luna empujadas a la derecha
+  con el `margin-left: auto` ya existente) y la tagline como línea
+  propia debajo, fuera de esa fila.
+- Con `align-items: center` en vez de `baseline`, los íconos quedan
+  centrados verticalmente contra la altura real del texto del logo,
+  sin depender de cómo el navegador calcule la línea de base de un SVG.
