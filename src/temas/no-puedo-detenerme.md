@@ -2,7 +2,7 @@
 title: "No Puedo Detenerme"
 date: 2022-04-15
 type: single
-cover: "https://i.ytimg.com/vi/FiLcv5txMzQ/maxresdefault.jpg"
+cover: "https://i.ytimg.com/vi/3rUwP24OS8o/maxresdefault.jpg"
 streamingUrl: "https://open.spotify.com/intl-es/album/2CnhV2TMDTCq7ikX4W8gpm?si=pKCGdW4gRcOVLPZxIcgNpQ"
 links:
   - "https://music.apple.com/ar/album/no-puedo-detenerme-single/1663210781"
