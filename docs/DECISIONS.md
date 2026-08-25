@@ -992,3 +992,39 @@ todo de forma distinta según el ancho disponible.**
 - Con `align-items: center` en vez de `baseline`, los íconos quedan
   centrados verticalmente contra la altura real del texto del logo,
   sin depender de cómo el navegador calcule la línea de base de un SVG.
+
+## POST-LANZAMIENTO — Estructura lista para íconos oficiales de plataforma
+
+**D73. Se preparó el soporte para mostrar el logo oficial de cada
+plataforma (Spotify, Apple Music, etc.) en los pills, sin dibujar los
+logos nosotros mismos — son marcas registradas de terceros (mismo
+criterio que D42).**
+
+- Investigadas fuentes oficiales: Spotify tiene un hub de brand
+  guidelines para developers/partners
+  (developer.spotify.com/documentation/design); Apple Music tiene un
+  generador de badges para artistas
+  (artists.apple.com/support/1117-apple-music-marketing-tools), con
+  sus propias Identity Guidelines de uso. No se encontraron con la
+  misma certeza equivalentes para YouTube Music/Deezer/SoundCloud en
+  esta ronda de búsqueda.
+- Nuevo filtro `platformIcon(url)`: detecta la plataforma (reutiliza
+  la misma tabla que `platformLabel`, ahora unificada en una función
+  `detectPlatform()` para no mantener dos listas de regex separadas)
+  y chequea en el filesystem, en tiempo de build, si existe
+  `src/assets/img/platforms/<slug>.svg` (o `.png`). Si existe, devuelve
+  su URL pública; si no, devuelve cadena vacía — el template muestra
+  el ícono solo si lo encuentra, sin romper nada mientras tanto.
+- Carpeta `src/assets/img/platforms/` creada (vacía, con `.gitkeep`
+  para que Git la versione) — el usuario va a ir subiendo los badges
+  ahí a medida que los consiga, con nombre de archivo documentado en
+  `docs/PLANTILLAS.md`.
+- Verificado con un archivo SVG de prueba (creado y eliminado en la
+  misma sesión) que el mecanismo funciona de punta a punta: aparece
+  el ícono con la URL correcta (incluyendo `pathPrefix`) apenas el
+  archivo existe, sin tocar ningún template.
+- Aplicado en los tres lugares donde se muestran pills: la macro
+  `card()`, los layouts de detalle (`tema.njk`, `playlist.njk`), y la
+  página `/streaming/` (que además dejó de mostrar la clave cruda del
+  JSON —`appleMusic`— y ahora usa el nombre auto-detectado, igual
+  que el resto del sitio).

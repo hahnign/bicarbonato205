@@ -1,5 +1,7 @@
 const { rssPlugin } = require("@11ty/eleventy-plugin-rss");
 const markdownIt = require("markdown-it");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = function (eleventyConfig) {
 
@@ -139,14 +141,38 @@ module.exports = function (eleventyConfig) {
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("stripHtml", (content) => {
     return String(content)
+      .replace(/<br\s*\/?>/gi, "\n") // <br> se convierte en salto de línea de TEXTO, no HTML — se preserva aunque el resto de las etiquetas se saquen
       .replace(/<[^>]*>/g, "")
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'")
       .replace(/&lt;/g, "<")
       .replace(/&gt;/g, ">")
       .replace(/&amp;/g, "&") // siempre al final, evita decodificar de más
+      .replace(/\n{2,}/g, "\n") // el HTML de markdown-it ya trae un \n real después de cada <br>, sin esto quedaban duplicados
       .trim();
   });
+
+  /* ------------------------------------------------------------
+     Tabla única de plataformas: nombre visible + slug de archivo.
+     La usan platformLabel y platformIcon, para no mantener dos
+     listas de regex separadas que puedan desincronizarse.
+     ------------------------------------------------------------ */
+  const PLATFORMS = [
+    [/spotify|spoti\.fi/i, "Spotify", "spotify"],
+    [/music\.apple/i, "Apple Music", "apple-music"],
+    [/youtu\.?be/i, "YouTube", "youtube"],
+    [/soundcloud/i, "SoundCloud", "soundcloud"],
+    [/deezer/i, "Deezer", "deezer"],
+    [/bandcamp/i, "Bandcamp", "bandcamp"],
+  ];
+
+  function detectPlatform(url) {
+    if (!url) return { label: "Escuchar", slug: "" };
+    for (const [regex, label, slug] of PLATFORMS) {
+      if (regex.test(url)) return { label, slug };
+    }
+    return { label: "Escuchar", slug: "" };
+  }
 
   /* ------------------------------------------------------------
      FILTRO: platformLabel
@@ -155,20 +181,25 @@ module.exports = function (eleventyConfig) {
      etc. automáticamente, sin tener que escribirlo a mano en cada
      página y sin que se desactualice si cambia el link.
      ------------------------------------------------------------ */
-  eleventyConfig.addFilter("platformLabel", (url) => {
-    if (!url) return "Escuchar";
-    const platforms = [
-      [/spotify|spoti\.fi/i, "Spotify"],
-      [/music\.apple/i, "Apple Music"],
-      [/youtu\.?be/i, "YouTube"],
-      [/soundcloud/i, "SoundCloud"],
-      [/deezer/i, "Deezer"],
-      [/bandcamp/i, "Bandcamp"],
-    ];
-    for (const [regex, label] of platforms) {
-      if (regex.test(url)) return label;
+  eleventyConfig.addFilter("platformLabel", (url) => detectPlatform(url).label);
+
+  /* ------------------------------------------------------------
+     FILTRO: platformIcon
+     Si existe un ícono oficial subido para esta plataforma en
+     src/assets/img/platforms/<slug>.svg (o .png), devuelve su URL
+     pública. Si no existe todavía, devuelve "" — el template usa eso
+     para mostrar solo el texto, sin romper nada. Apenas subas el
+     archivo con el nombre correcto, el ícono aparece solo, sin tocar
+     ningún template.
+     ------------------------------------------------------------ */
+  eleventyConfig.addFilter("platformIcon", (url) => {
+    const { slug } = detectPlatform(url);
+    if (!slug) return "";
+    for (const ext of ["svg", "png"]) {
+      const filePath = path.join(__dirname, "src/assets/img/platforms", `${slug}.${ext}`);
+      if (fs.existsSync(filePath)) return `/assets/img/platforms/${slug}.${ext}`;
     }
-    return "Escuchar";
+    return "";
   });
 
   /* ------------------------------------------------------------

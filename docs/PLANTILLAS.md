@@ -81,3 +81,25 @@ Texto de la noticia.
 - `date` en formato `AAAA-MM-DD`.
 - Después de crear el archivo: `npm run dev` para verlo en local, y
   cuando esté bien, `git add`, `git commit`, `git push`.
+
+---
+
+## Íconos de plataformas de streaming (Spotify, Apple Music, etc.)
+
+Si conseguís los badges oficiales de cada plataforma (Spotify y Apple
+Music tienen generadores oficiales — ver `docs/DECISIONS.md` para los
+links), subilos a `src/assets/img/platforms/` con este nombre exacto:
+
+| Plataforma  | Nombre de archivo             |
+|-------------|--------------------------------|
+| Spotify     | `spotify.svg` (o `.png`)      |
+| Apple Music | `apple-music.svg` (o `.png`)  |
+| YouTube     | `youtube.svg` (o `.png`)      |
+| Deezer      | `deezer.svg` (o `.png`)       |
+| SoundCloud  | `soundcloud.svg` (o `.png`)   |
+| Bandcamp    | `bandcamp.svg` (o `.png`)     |
+
+No hace falta tocar ningún template — apenas el archivo con ese
+nombre exacto exista, el ícono aparece solo (en la Fase de Streaming
+y en las pills de las tarjetas) la próxima vez que corras
+`npm run build`.

@@ -123,6 +123,13 @@
   font-size: var(--text-xs);
 }
 
+.btn__icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
 .card__actions {
   display: flex;
   flex-wrap: wrap;

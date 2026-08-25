@@ -14,7 +14,11 @@ layout: layouts/base.njk
     {% if links.length %}
       <div class="detail-card__actions">
         {% for link in links %}
-          <a class="btn btn--sm btn--pill" href="{{ link }}">{{ link | platformLabel }} →</a>
+          {% set icon = link | platformIcon %}
+          <a class="btn btn--sm btn--pill" href="{{ link }}">
+            {% if icon %}<img src="{{ icon }}" alt="" class="btn__icon">{% endif %}
+            {{ link | platformLabel }} →
+          </a>
         {% endfor %}
       </div>
     {% endif %}
