@@ -467,6 +467,24 @@
   margin-bottom: var(--space-8);
 }
 
+.streaming-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.streaming-link {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+}
+
+.streaming-link:hover {
+  color: var(--color-accent);
+}
+
 .page-text {
   font-size: var(--text-base);
   color: var(--color-text-muted);

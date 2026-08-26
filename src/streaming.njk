@@ -10,13 +10,9 @@ permalink: /streaming/
 </section>
 
 <section class="page-section">
-  <div class="card-grid">
+  <div class="streaming-links">
     {% for name, url in site.streaming %}
-      {% set icon = url | platformIcon %}
-      <a class="btn" href="{{ url }}">
-        {% if icon %}<img src="{{ icon }}" alt="" class="btn__icon">{% endif %}
-        {{ url | platformLabel }} →
-      </a>
+      <a class="streaming-link" href="{{ url }}">{{ url | platformLabel }}</a>
     {% endfor %}
   </div>
 </section>
