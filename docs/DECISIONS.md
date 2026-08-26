@@ -2,7 +2,7 @@
 
 Este documento registra **qué se decidió y por qué**, en el orden en que se tomaron
 las decisiones a lo largo del proyecto. No reemplaza al README (Fase 9), que va a
-explicar _cómo usar_ el proyecto terminado. Este archivo explica _cómo se llegó_
+explicar *cómo usar* el proyecto terminado. Este archivo explica *cómo se llegó*
 a cada elección, para poder repetir el proceso en otro proyecto o retomarlo
 después de tiempo sin memoria del razonamiento.
 
@@ -13,7 +13,6 @@ Formato por entrada: **Decisión → Por qué → Alternativas descartadas**.
 ## FASE 1 — Planificación y arquitectura
 
 **D1. Sitio estático generado con Eleventy, sin backend ni base de datos.**
-
 - Por qué: se alinea con la filosofía "publicar poco, publicar bien" — cero
   mantenimiento de servidor, cero parches de seguridad recurrentes.
 - Alternativas descartadas: WordPress u otro CMS dinámico (más mantenimiento,
@@ -21,14 +20,12 @@ Formato por entrada: **Decisión → Por qué → Alternativas descartadas**.
 
 **D2. Arquitectura de contenido: "Archivo" como colección maestra, con
 "Lanzamientos" y "Videos" como vistas filtradas de la misma colección.**
-
 - Por qué: evita duplicar contenido en tres sistemas distintos; agregar un
   Markdown nuevo alcanza para que aparezca en todos los listados relevantes.
 - Alternativas descartadas: tres colecciones independientes (más simple de
   entender al principio, pero genera duplicación y desincronización).
 
 **D3. Streaming como enlace siempre visible en el menú principal.**
-
 - Por qué: es la acción de mayor valor de conversión del sitio (escuchar
   música), se prioriza jerárquicamente sobre el resto.
 
@@ -38,7 +35,6 @@ Formato por entrada: **Decisión → Por qué → Alternativas descartadas**.
 
 **D4. Eleventy instalado como dependencia local del proyecto (`--save-dev`),
 no global.**
-
 - Por qué: evita conflictos de versión entre distintos proyectos en la misma
   computadora; práctica estándar del ecosistema Node moderno.
 - Alternativas descartadas: instalación global (`npm install -g`) — más simple
@@ -50,15 +46,13 @@ no global.**
 
 **D5. Rama principal `main`, GitHub Pages configurado con fuente "GitHub
 Actions" (no "Deploy from a branch").**
-
 - Por qué: el sitio requiere un paso de build (Eleventy transformando Markdown
   a HTML) antes de publicarse; "Deploy from a branch" solo sirve para HTML ya
   generado y subido directamente al repo.
 - Nota: el workflow de Actions concreto se implementa recién cuando hay
   contenido real de Eleventy que construir (Fase 5+).
 
-**D6. `.gitignore` creado _antes_ del primer `git add`.**
-
+**D6. `.gitignore` creado *antes* del primer `git add`.**
 - Por qué: evita que `node_modules/` quede commiteada por error, lo cual
   requeriría remoción retroactiva del historial (`git rm -r --cached`).
 
@@ -68,7 +62,6 @@ Actions" (no "Deploy from a branch").**
 
 **D7. El mockup aprobado se usa como fuente del sistema visual (color,
 tipografía, espaciado, componentes), pero NO de la taxonomía de contenido.**
-
 - Por qué: el mockup está resuelto sobre un sitio de entretenimiento genérico
   (cine/series/juegos), que contradice la taxonomía musical definida en D2.
   Separar "cómo se ve" de "qué contiene" es el mismo principio de
@@ -79,14 +72,12 @@ tipografía, espaciado, componentes), pero NO de la taxonomía de contenido.**
 **D8. Paleta de color de 7 tokens base + 4 tokens de categoría, con el verde
 lima (`#D4FF3D`) reservado como único acento de marca (CTAs, estados
 interactivos) — los colores de categoría son solo etiquetas informativas.**
-
 - Por qué: mantener un solo acento de marca evita que el lima pierda peso
   visual por sobreuso; los colores de categoría ayudan a escanear contenido
   mixto sin competir por ese rol.
 
 **D9. Sistema tipográfico de tres roles: Archivo Black (display), IBM Plex
 Mono (nav/labels/metadatos), Inter (cuerpo de texto).**
-
 - Por qué: una sola fuente no puede ser simultáneamente efectiva en títulos
   gigantes y en párrafos largos; la fuente mono es, además, la firma
   tipográfica que distingue el diseño de un sitio editorial genérico.
@@ -94,7 +85,6 @@ Mono (nav/labels/metadatos), Inter (cuerpo de texto).**
   (se mitiga en Fase 8 con subsetting y `font-display: swap`).
 
 **D10. `border-radius: 0` y sin `box-shadow` en todo el sistema.**
-
 - Por qué: es la decisión visual central del carácter "brutalista" pedido
   desde el brief original; la jerarquía se resuelve con líneas finas y
   contraste de superficie, no con sombras.
@@ -102,7 +92,6 @@ Mono (nav/labels/metadatos), Inter (cuerpo de texto).**
 **D11. `tokens.css` como archivo único y fuente de verdad de todas las
 variables visuales; ningún otro archivo CSS del proyecto usa valores hex/px
 sueltos.**
-
 - Por qué: es la pieza más portable de la plantilla maestra — para un
   proyecto nuevo, este es prácticamente el único archivo que se reescribe
   por completo, mientras el resto del sistema consume estas variables por
@@ -114,14 +103,12 @@ sueltos.**
 
 **D12. `src/` como raíz dedicada de contenido, separada de la raíz del
 proyecto (que contiene tooling: `package.json`, `.git/`, `docs/`).**
-
 - Por qué: evita que Eleventy tenga que excluir manualmente archivos de
   configuración; la regla queda simple ("todo dentro de `src/` es el
   sitio") en vez de una lista creciente de excepciones.
 
 **D13. Nunjucks (`.njk`) como motor de plantillas, en vez de Liquid
 (default histórico de Eleventy).**
-
 - Por qué: soporta herencia de plantillas y macros — necesarios para
   reutilizar componentes de tarjeta sin duplicar HTML (Fase 6).
 - Alternativas descartadas: Liquid (más simple, pero sin macros).
@@ -132,7 +119,6 @@ proyecto (que contiene tooling: `package.json`, `.git/`, `docs/`).**
 
 **D14. Collections por tag + Directory Data Files, en vez de registrar
 colecciones manualmente en `.eleventy.js`.**
-
 - Por qué: es el mecanismo que permite cumplir el requisito de la Fase 1
   ("agregar un lanzamiento nuevo requiere solo crear un Markdown") — el
   archivo `lanzamientos.json` dentro de `src/lanzamientos/` aplica
@@ -142,7 +128,6 @@ colecciones manualmente en `.eleventy.js`.**
   con el archivo de ejemplo sin registro manual adicional.
 
 **D15. Passthrough copy explícito para `assets/css` y `assets/js`.**
-
 - Por qué: Eleventy ignora por defecto archivos que no reconoce como
   plantilla; sin esto, el CSS/JS nunca llegaría a `_site/`.
 
@@ -152,7 +137,6 @@ colecciones manualmente en `.eleventy.js`.**
 
 **D16. Navegación principal con 7 ítems, no 9. Contacto y Newsletter no
 están en el nav.**
-
 - Por qué: el brief pide explícitamente "menú extremadamente simple";
   Contacto va al footer (patrón estándar para info de baja frecuencia de
   uso) y Newsletter se resuelve como sección de footer, no como página,
@@ -162,7 +146,6 @@ están en el nav.**
 
 **D17. Colección custom `archivo` (vía `addCollection` en `.eleventy.js`)
 que combina lanzamiento + video + playlist ordenados por fecha.**
-
 - Por qué: ninguna colección automática por tag combina múltiples tags en
   una sola línea de tiempo; se necesita lógica explícita.
 - Verificado con build real: la página `/archivo/` muestra los 3 tipos de
@@ -171,12 +154,10 @@ que combina lanzamiento + video + playlist ordenados por fecha.**
 **D18. Macro de Nunjucks (`macros/card.njk`) para la tarjeta de
 contenido, reutilizada en Inicio, Archivo, Lanzamientos, Videos y
 Playlists.**
-
 - Por qué: es el componente que más se repite en el sitio; una macro con
   parámetros evita duplicar el mismo bloque de HTML cinco veces.
 
 **D19. `components.css` separado de `base.css`.**
-
 - Por qué: `base.css` mantiene el reset y estilos elementales; los estilos
   de cada componente (nav, cards, badges, botones, forms, footer) crecen
   con cada fase nueva y necesitan su propio archivo para no volver
@@ -185,7 +166,6 @@ Playlists.**
 **D20. Colecciones mínimas de `video` y `playlist` creadas ya en esta
 fase (con un archivo de ejemplo cada una), aunque el sistema completo de
 contenido se define recién en la Fase 7.**
-
 - Por qué: sin datos reales las páginas de Videos y Playlists no podían
   verificarse visualmente; se prioriza tener el shell funcionando de
   punta a punta sobre completar el modelo de datos antes de tiempo.
@@ -196,7 +176,6 @@ contenido se define recién en la Fase 7.**
 
 **D21. Modelo de datos fijo por tipo de contenido (tabla en el chat de
 la Fase 7), incluyendo un cuarto tipo nuevo: Noticia.**
-
 - Por qué: evita `{% if %}` defensivos en las plantillas por campos que
   a veces existen y a veces no.
 
@@ -204,7 +183,6 @@ la Fase 7), incluyendo un cuarto tipo nuevo: Noticia.**
 `playlist.njk`, `noticia.njk`), en vez de renderizar el Markdown crudo
 sobre `layouts/base.njk` directamente (como quedó, de forma temporal,
 en la Fase 5).**
-
 - Por qué: layout chaining de Eleventy — cada layout de detalle tiene su
   propio `layout: layouts/base.njk` en el front matter, así se anida
   dentro del layout general sin duplicar `<html>/<head>`.
@@ -212,30 +190,26 @@ en la Fase 5).**
 **D23. Cinco filtros custom (`limit`, `excerpt`, `siblingItem`,
 `relatedItems`, `groupByYear`) en vez de resolver esa lógica dentro de
 las plantillas Nunjucks.**
-
 - Por qué: Nunjucks no tiene forma nativa de buscar el índice de un
   ítem en un array o de agrupar por año; hacerlo en la plantilla la
   volvería ilegible. La lógica de datos vive en `.eleventy.js`, la
   plantilla solo la consume.
 
-\*\*D24. Búsqueda client-side vía JSON estático (`search-index.11ty.js`)
-
-- JS vainilla, sin librería de búsqueda ni servicio externo.\*\*
-
-* Por qué: el volumen de contenido esperado (pocas decenas de items) no
+**D24. Búsqueda client-side vía JSON estático (`search-index.11ty.js`)
++ JS vainilla, sin librería de búsqueda ni servicio externo.**
+- Por qué: el volumen de contenido esperado (pocas decenas de items) no
   justifica una librería de indexado; un `fetch` + `filter` por substring
   alcanza y no agrega peso ni dependencias.
-* Alternativa descartada: Algolia/Lunr.js — sobre-ingeniería para este
+- Alternativa descartada: Algolia/Lunr.js — sobre-ingeniería para este
   volumen de contenido.
 
 **D25. RSS con el plugin oficial `@11ty/eleventy-plugin-rss`, no XML
 escrito a mano.**
-
 - Por qué: RSS exige formato de fecha RFC-822 y URLs absolutas; el
   plugin ya lo resuelve correctamente. Nota técnica real: la v3 del
   plugin cambió su forma de exportar (named exports en vez de default)
   y renombró `rssLastUpdatedDate` → `getNewestCollectionItemDate |
-dateToRfc822` — ambos errores aparecieron y se corrigieron durante
+  dateToRfc822` — ambos errores aparecieron y se corrigieron durante
   la verificación con build real en esta fase.
 
 ---
@@ -245,20 +219,17 @@ dateToRfc822` — ambos errores aparecieron y se corrigieron durante
 **D26. SEO completo (canonical, Open Graph, Twitter Card, JSON-LD
 `MusicGroup`) agregado a `layouts/base.njk`, con `cover` de cada
 contenido como imagen social y `og-default.jpg` como fallback.**
-
 - Por qué: sin esto, compartir un link del sitio en redes/WhatsApp
   muestra una tarjeta pelada — crítico para un proyecto que depende de
   que la música se comparta.
 
 **D27. `robots.txt` y `sitemap.xml` generados como templates Eleventy
 (`.njk` con permalink custom), no como archivos estáticos sueltos.**
-
 - Por qué: el sitemap necesita iterar `collections.archivo` dinámicamente;
   generarlo a mano quedaría desactualizado en cada lanzamiento nuevo.
 
 **D28. Carga de Google Fonts vía `<link>` con `preconnect` +
 `font-display: swap`, en vez de self-hosting.**
-
 - Por qué: implementación más simple; el trade-off (dependencia de un
   servicio externo) se documenta explícitamente para revisarlo si el
   proyecto migra a self-hosting de fuentes en el futuro por performance
@@ -269,7 +240,6 @@ contenido como imagen social y `og-default.jpg` como fallback.**
 
 **D29. `loading="lazy"` solo en imágenes de grilla (tarjetas), NO en la
 imagen de portada de páginas de detalle.**
-
 - Por qué: la portada de detalle está arriba del pliegue — lazy-load ahí
   perjudica el LCP (Largest Contentful Paint) en vez de ayudar. Es un
   error real que cometí y corregí durante esta fase: apliqué lazy a
@@ -278,14 +248,12 @@ imagen de portada de páginas de detalle.**
 
 **D30. `srcset`/imágenes responsive NO implementado — queda como punto
 abierto documentado, no resuelto con una suposición.**
-
 - Por qué: depende de qué CDN externo se use para alojar imágenes
   (definido como pendiente desde la Fase 1); implementarlo ahora
   hubiera significado inventar una convención de URL que puede no
   coincidir con el CDN real que elijas.
 
 **D31. Skip-link + `aria-current="page"` agregados a header/nav.**
-
 - Por qué: patrón de accesibilidad estándar para navegación por teclado
   y lectores de pantalla, ausente hasta esta fase.
 
@@ -295,21 +263,18 @@ abierto documentado, no resuelto con una suposición.**
 
 **D32. Workflow de GitHub Actions completado (pendiente desde la
 Fase 3), usando `npm ci` + `npx eleventy` + `actions/deploy-pages`.**
-
 - Por qué: `npm ci` en vez de `npm install` en CI — instala exactamente
   `package-lock.json`, sin riesgo de que un build automático actualice
   una dependencia sin que nadie lo revise.
 
 **D33. `README.md` separado de `DECISIONS.md`, con roles explícitamente
 distintos: README = cómo usar; DECISIONS.md = por qué se construyó así.**
-
 - Por qué: mezclar ambos en un solo documento obliga a elegir entre un
   README inflado de justificaciones técnicas (malo para alguien que solo
   quiere agregar un lanzamiento) o un spec pobre en contexto (malo para
   reutilizar la metodología en otro proyecto).
 
 **D34. Scripts npm (`dev`, `build`, `clean`) agregados a `package.json`.**
-
 - Por qué: convención estándar que cualquier desarrollador espera
   encontrar; documentados en el README para que el flujo de trabajo diario
   no dependa de recordar `npx eleventy` de memoria.
@@ -320,14 +285,13 @@ distintos: README = cómo usar; DECISIONS.md = por qué se construyó así.**
 
 **D35. Bug: el primer deploy falló porque GitHub Pages corrió Jekyll
 automáticamente sobre el código fuente, en vez de usar `deploy.yml`.**
-
 - Síntoma: el job "build" del workflow pasaba en verde, pero el deploy
   fallaba con `Error: Liquid syntax error ... Unknown tag 'from'` —
   Jekyll (motor de Pages por defecto) intentando parsear
   `{% from "macros/card.njk" import card %}` (sintaxis Nunjucks) como
   si fuera Liquid.
 - Causa raíz: **Settings → Pages → Source** seguía en `Deploy from a
-branch` en vez de `GitHub Actions`. Con esa fuente, Pages ignora el
+  branch` en vez de `GitHub Actions`. Con esa fuente, Pages ignora el
   workflow custom y procesa la rama directamente con su pipeline Jekyll
   automático.
 - Fix: cambiar Source a `GitHub Actions` en la configuración del repo
@@ -339,8 +303,7 @@ branch` en vez de `GitHub Actions`. Con esa fuente, Pages ignora el
 
 **D37. Bug: el sitio publicado se veía sin estilos — CSS/JS/nav
 devolvían 404.**
-
-- Causa raíz: GitHub Pages de _proyecto_ (repo `hahnign/bicarbonato205`)
+- Causa raíz: GitHub Pages de *proyecto* (repo `hahnign/bicarbonato205`)
   sirve el sitio bajo `https://hahnign.github.io/bicarbonato205/`, no en
   la raíz del dominio. Todos los `href`/`src` del proyecto eran rutas
   absolutas (`/assets/css/tokens.css`), que el navegador resuelve contra
@@ -373,7 +336,6 @@ devolvían 404.**
 **D38. Se reemplazó completamente la paleta/forma de la Fase 4 (oscuro,
 lima, sin bordes redondeados, sin sombras) por la identidad real de
 marca (claro, rojo, bordes redondeados, sombras suaves).**
-
 - Causa: el mockup de la Fase 4 nunca fue contrastado contra el
   Linktree oficial del proyecto (`linktr.ee/bicarbonato205`) ni contra
   el logo real. Al revisar ambos, la identidad real es: fondo
@@ -395,7 +357,6 @@ marca (claro, rojo, bordes redondeados, sombras suaves).**
 
 **D39. Bug: el sitio no entraba en pantallas mobile reales (Galaxy A32,
 iPhone) — scroll horizontal, layout roto.**
-
 - Causa raíz: `.page-hero__title` usaba `--text-2xl: 4rem` (64px) fijo.
   La palabra "Bicarbonato205." dentro del tagline, a ese tamaño, mide
   ~500px+ — más ancha que un viewport mobile real (~360-390px) — y al
@@ -433,7 +394,6 @@ regenerados a partir del logo real** (subido por el usuario), reemplazando
 los placeholders lima de la Fase 8. `theme-color` corregido a rojo
 (`#B50000`) en `base.njk` y `site.webmanifest` (había quedado en negro
 tras el rediseño de paleta).
-
 - Limitación reconocida explícitamente: el favicon de 32px es poco
   legible porque el logo es un wordmark completo, no un ícono
   compacto — se mantiene así porque el usuario pidió usar ese archivo
@@ -441,7 +401,6 @@ tras el rediseño de paleta).
 
 **D42. Íconos sociales del footer: monograma en círculo rojo (inicial
 de la plataforma), no el logo oficial de cada marca.**
-
 - Por qué: reproducir logos de marca de memoria en SVG es poco
   confiable y además son marcas registradas de terceros; el monograma
   mantiene el lenguaje visual circular del Linktree real sin ese riesgo.
@@ -476,7 +435,6 @@ estrategia de imágenes responsive según el CDN que elijas.
 
 **D43. Revertido D42 (íconos circulares en el footer) a pedido explícito
 del usuario — vuelta a la lista de texto plano (versión pre-D42).**
-
 - Por qué: preferencia directa del usuario, sin ambigüedad — "no me
   gustaron los logos de streaming". Se eliminó también `macros/icon.njk`
   y el CSS de `.social-icon`/`.social-icon-row` por completo (no
@@ -487,7 +445,6 @@ del usuario — vuelta a la lista de texto plano (versión pre-D42).**
 sobre el rojo de marca (`#B50000`), reemplazando el intento anterior de
 usar el wordmark completo reducido (D41), que el usuario consideró poco
 legible/prolijo.**
-
 - Resuelve además la limitación que yo mismo había señalado en D41
   (favicon de 32px ilegible por ser un wordmark completo) — en este
   caso la corrección de diseño y el pedido del usuario coincidieron.
@@ -506,7 +463,6 @@ reales a medida que aparecen, no solo las 9 fases originales.
 13 feb 2022), reemplazando los 4 archivos de ejemplo/prueba, que se
 eliminaron por completo (`ejemplo-single.md`, `ejemplo-video.md`,
 `ejemplo-playlist.md`, `ejemplo-noticia.md`).**
-
 - Se cargó como DOS entradas de contenido (lanzamiento + video), no una
   sola — el modelo de datos del proyecto ya distinguía ambos tipos
   desde la Fase 7, y esta pieza real encaja naturalmente en los dos:
@@ -527,7 +483,6 @@ a una página de detalle interna — ahora muestran fecha, resumen
 (generado con el filtro `excerpt` ya existente desde la Fase 7) y un
 botón que lleva directo a la plataforma externa (Spotify/YouTube/etc),
 similar a una grilla de YouTube.**
-
 - Por qué: pedido explícito del usuario — no le gustaba que el click
   lo sacara a una página dominada por una imagen grande.
 - Noticia es la excepción: sigue linkeando a su propia página, porque
@@ -544,7 +499,6 @@ similar a una grilla de YouTube.**
 
 **D47. Cuatro ajustes a las tarjetas de contenido, todos a pedido
 explícito del usuario:**
-
 - Portada: `aspect-ratio` cambiado de 4:3 a 16:9, para que coincida
   exactamente con la proporción nativa de las miniaturas de YouTube
   (1280x720) y no las recorte.
@@ -576,7 +530,6 @@ el mailto: real en el href).**
 caracteres a recorte visual con CSS (`-webkit-line-clamp: 3`) + JS que
 mide el desborde real (`scrollHeight > clientHeight`) para decidir si
 mostrar el botón.**
-
 - Por qué: un recorte por caracteres no sabe si el texto realmente
   desborda una tarjeta de ancho variable (1 a 4 columnas según
   viewport) — el mismo texto puede sobrar espacio en mobile (1
@@ -591,7 +544,6 @@ mostrar el botón.**
   equivalente, técnicamente robusto.
 
 **D50. Modo oscuro/claro implementado.**
-
 - Paleta oscura completa como override de `:root[data-theme="dark"]`
   en `tokens.css` — el resto del CSS no cambia, sigue consumiendo las
   mismas variables.
@@ -612,7 +564,6 @@ mostrar el botón.**
 **D51. Script `scripts/nuevo-contenido.mjs` (`npm run new -- <tipo>`)
 para automatizar la creación de contenido, más `docs/PLANTILLAS.md`
 como referencia manual de respaldo.**
-
 - El script usa el oEmbed público de YouTube (sin API key) para
   autocompletar título y portada cuando se pega un link, ante la
   necesidad real del usuario de subir contenido que ya tiene publicado.
@@ -634,7 +585,6 @@ como referencia manual de respaldo.**
 **D52. Tipografía reemplazada: Passion One (títulos) + Google Sans Code
 (todo lo demás: nav, labels, fechas y cuerpo de texto), reemplazando
 Archivo Black + IBM Plex Mono + Inter.**
-
 - Pedido explícito del usuario, con el link de Google Fonts ya
   provisto para Passion One.
 - Se simplificó de 3 familias a 2: `--font-mono` y `--font-body` ahora
@@ -649,27 +599,25 @@ Archivo Black + IBM Plex Mono + Inter.**
 
 ## POST-LANZAMIENTO — Múltiples plataformas por tarjeta
 
-\*\*D53. Nuevo campo opcional `links` (lista) en Lanzamiento y Video,
+**D53. Nuevo campo opcional `links` (lista) en Lanzamiento y Video,
 para mostrar varias pills de plataforma en una misma tarjeta (Spotify
-
-- YouTube + Deezer + Apple Music, etc.), no solo una.\*\*
-
-* Nuevo filtro `collectLinks`: combina el campo singular viejo
++ YouTube + Deezer + Apple Music, etc.), no solo una.**
+- Nuevo filtro `collectLinks`: combina el campo singular viejo
   (`streamingUrl`/`youtubeUrl`/`url`, según tipo) con el nuevo campo
   plural `links`, sin duplicados — mantiene compatibilidad total con
   el contenido ya cargado (Poco Tiempo sigue funcionando sin cambios).
-* La macro `card()` pasó de recibir una URL única a recibir un array;
+- La macro `card()` pasó de recibir una URL única a recibir un array;
   renderiza una pill por link, cada una con su plataforma
   auto-detectada (mismo filtro `platformLabel` de D47).
-* Segundo lanzamiento real cargado como ejemplo de uso ("No Estamos
+- Segundo lanzamiento real cargado como ejemplo de uso ("No Estamos
   Solos", con Spotify + YouTube simultáneos).
-* **Bug real encontrado y corregido en el camino:** el filtro
+- **Bug real encontrado y corregido en el camino:** el filtro
   `stripHtml` no decodificaba entidades HTML (`&quot;`), y Nunjucks
   las volvía a escapar al mostrarlas (`&amp;quot;`, doble-escapado
   visible en pantalla). Se corrigió decodificando entidades comunes
   dentro de `stripHtml`, con `&amp;` decodificado al final para evitar
   decodificar de más.
-* El script de automatización (`npm run new`) también se actualizó:
+- El script de automatización (`npm run new`) también se actualizó:
   después de los campos principales, pregunta plataformas adicionales
   en loop hasta que se deja vacío, y genera el bloque YAML `links:`
   automáticamente.
@@ -684,7 +632,6 @@ usuario ("Contacto" se sentía muy pegado a la columna del medio).
 CSS, y el `action="#"` placeholder que venía sin conectar desde la
 Fase 6) y se reemplazó por una frase de identidad de marca, en un
 cuarto rol tipográfico nuevo: `--font-accent` (Amatic SC, cursiva).**
-
 - Por qué: decisión directa del usuario — no van a mandar mails, así
   que un newsletter sin implementar no aporta nada y ocupa espacio.
 - El texto vive en `_data/site.json` (`footerQuote`), no hardcodeado
@@ -697,28 +644,24 @@ cuarto rol tipográfico nuevo: `--font-accent` (Amatic SC, cursiva).**
 
 **D56. Padding vertical del hero reducido de 64px fijos a 32px en
 mobile (64px se mantiene desde 1024px de ancho).**
-
 - Por qué: en celular quedaba demasiado separado del header y del
   contenido — pedido explícito del usuario tras verlo en uso real.
 
 **D57. Logo circular agregado al hero de Inicio, junto al título**
 (`.page-hero__brand`: columna en mobile, fila en desktop desde
 1024px), estilo inspirado en el header de un canal de YouTube (avatar
-
-- título grande al lado).
-
-* El recorte circular es 100% CSS (`border-radius: 50%` sobre una
++ título grande al lado).
+- El recorte circular es 100% CSS (`border-radius: 50%` sobre una
   imagen cuadrada) — no se editó el archivo de imagen. Esto es lo que
   permite que "afuera del círculo" sea transparente y se adapte solo a
   modo claro/oscuro, sin depender de ningún trabajo de diseño extra.
-* Verificado con un recorte de prueba (Pillow) antes de implementar,
+- Verificado con un recorte de prueba (Pillow) antes de implementar,
   para confirmar que el diseño real del logo no perdía letras
   importantes en las esquinas del círculo.
 
 **D58. Footer reestructurado a 4 columnas: [Streaming + Contacto
 agrupadas, ~1/3 del ancho] + [Frase] + [Logo circular, mismo criterio
 que D57].**
-
 - Streaming y Contacto viven en un `.site-footer__group` con su propio
   grid interno de 2 columnas, más pegadas entre sí que la separación
   general del footer (`column-gap` interno menor al del grid externo).
@@ -726,7 +669,6 @@ que D57].**
 **D59. Bio completa cargada en `_data/site.json` (`bio`), mostrada en
 Acerca (reemplaza `site.description` genérica) — NO en el hero de
 Inicio.**
-
 - Decisión (con recomendación explícita dada al usuario, aceptada):
   el hero de Inicio prioriza una primera impresión rápida (definido
   desde la Fase 1); un párrafo largo de biografía le compite ese
@@ -743,7 +685,6 @@ Inicio.**
 **D60. `.page-hero__brand` pasó de columna-en-mobile/fila-en-desktop a
 fila siempre, con el logo más chico en mobile (56px vs 110px en
 desktop) y `flex-shrink: 0` para que no se deforme.**
-
 - Por qué: en mobile, el layout en columna hacía que el logo y el
   título se vieran "separados por un enter" — pedido explícito del
   usuario de que queden uno al lado del otro en cualquier tamaño de
@@ -756,7 +697,6 @@ todos heredaban el `1.5` de `body`, pensado para párrafos. En títulos
 grandes que saltan a 2+ líneas (como el hero en mobile), eso deja un
 espacio excesivo entre renglones, rompiendo la sensación de "bloque
 compacto" con el logo al lado.**
-
 - Corregido en las cuatro reglas que usan `--font-display`:
   `.page-hero__title` (1.05), `.page-section__heading` (1.1),
   `.site-header__logo` (1.1), `.card__title` (1.15) — valores más
@@ -773,7 +713,6 @@ escrita a mano, ajena al `pathPrefix` — apuntaba a la raíz del dominio
 en vez de `/bicarbonato205/`. La búsqueda estaba rota en producción
 desde que se agregó `pathPrefix` (fix de deploy, mensaje "el sitio no
 se veía con estilos").**
-
 - Causa: el HTML transform automático de Eleventy (que corrige rutas
   con `pathPrefix`) solo reescribe atributos `href`/`src` dentro de
   HTML — nunca toca strings dentro de archivos `.js`.
@@ -796,7 +735,6 @@ se veía con estilos").**
 tamaño (se veía "descomunal") y usaban el sistema viejo de un solo
 link de acción, sin el soporte de múltiples plataformas agregado en
 D53. Reescritos con un nuevo componente `.detail-card`.**
-
 - Imagen contenida a `max-width: 640px`, proporción 16:9 (mismo
   criterio que D47, pero más grande que una tarjeta de grilla) —
   resuelve el problema real reportado por el usuario.
@@ -818,7 +756,6 @@ D53. Reescritos con un nuevo componente `.detail-card`.**
 **D64. Padding vertical del hero en desktop (≥1024px) reducido de 64px
 a 32px (la mitad), quedando igual al valor de mobile por coincidencia
 de la escala de espaciado. Mobile sin cambios.**
-
 - Se eliminó la media query que fijaba el valor de desktop, ya que
   ahora coincide con la regla base — dejarla hubiera sido código
   redundante sin ningún efecto real.
@@ -827,7 +764,6 @@ de la escala de espaciado. Mobile sin cambios.**
 
 **D65. Íconos de Buscar y de modo oscuro/claro: de texto/emoji a SVG
 inline con `fill/stroke: currentColor`.**
-
 - Por qué "currentColor": el ícono hereda automáticamente el color de
   texto del tema activo (claro/oscuro) sin necesitar dos archivos de
   ícono distintos — resuelve el pedido de "que cambie con el modo
@@ -840,7 +776,6 @@ inline con `fill/stroke: currentColor`.**
 de Amatic SC cursiva a Google Sans Code mono en mayúsculas, igual
 tratamiento visual que el heading "STREAMING" del footer, pero más
 grande.**
-
 - Se aplicó `text-transform: uppercase` explícitamente porque el
   pedido fue "como está escrito STREAMING", que también está en
   mayúsculas — no es solo la tipografía.
@@ -852,7 +787,6 @@ grande.**
 de Inicio, debajo del avatar+título — imita la estructura de un header
 de canal/perfil (avatar, nombre, línea de descripción debajo), a
 pedido del usuario con una captura de referencia de YouTube.**
-
 - Aclarado explícitamente: no se agregó una imagen de banner/foto de
   banda arriba del avatar (como sí tiene la referencia) — no había
   ese archivo disponible; queda pendiente si el usuario lo provee.
@@ -870,7 +804,6 @@ column) junto al título, ambos alineados a la izquierda entre sí.**
 **D69. Los tipos de contenido "lanzamiento" y "video" se fusionaron en
 un único tipo "tema" — un tema tiene portada, streaming y opcionalmente
 un video, todo en una sola entrada de contenido, no dos separadas.**
-
 - Por qué: cada canción real del proyecto (Poco Tiempo, No Estamos
   Solos) ya vivía repetida en dos lugares — el sistema `links` de D53
   ya permitía múltiples plataformas por ítem, así que mantener
@@ -903,7 +836,6 @@ uno solo: `tema` — decisión del usuario, ya que cada canción real
 tiene tanto lanzamiento (streaming) como video, y mantenerlos
 separados significaba cargar el mismo contenido dos veces (ya visto
 con "Poco Tiempo", que vivía duplicado en ambas colecciones).**
-
 - Nombre elegido para la sección: "Temas" (a pedido explícito del
   usuario, sobre "Lanzamientos" u otra alternativa).
 - `src/lanzamientos/` + `src/videos/` → `src/temas/`. El contenido
@@ -935,7 +867,6 @@ con "Poco Tiempo", que vivía duplicado en ambas colecciones).**
 **D70. Se configuró Eleventy para usar `markdown-it` con `breaks: true`
 explícitamente (antes usaba la configuración por defecto de Eleventy,
 sin este flag).**
-
 - Síntoma reportado: en `poco-tiempo.md`, un párrafo escrito en varias
   líneas (sin línea en blanco entre ellas, solo para comodidad de
   lectura en el editor) se renderizaba como una sola línea corrida —
@@ -948,7 +879,7 @@ sin este flag).**
   texto recortan espacios al final de línea automáticamente, rompiendo
   el formato sin que se note.
 - Fix: `eleventyConfig.setLibrary("md", markdownIt({ html:true,
-breaks:true, linkify:true }))` — con esto, cualquier salto de línea
+  breaks:true, linkify:true }))` — con esto, cualquier salto de línea
   real en el `.md` se respeta como `<br>`, sin necesitar trucos.
   Verificado que párrafos de una sola línea (No Estamos Solos, bio de
   Acerca) no se vieron afectados — el cambio solo actúa donde había
@@ -964,9 +895,8 @@ de texto real) en vez de eliminarlos junto con el resto del HTML —
 a pedido del usuario, tras confirmar que el fix de D70 (breaks:true)
 solo afectaba la página de detalle, no la tarjeta (que usa `stripHtml`
 para su preview en texto plano).**
-
 - Se agregó `white-space: pre-line` a `.card__desc` — sin esto, un
-  salto de línea de _texto_ (no HTML) tampoco se renderiza visualmente
+  salto de línea de *texto* (no HTML) tampoco se renderiza visualmente
   en el navegador; es el mismo problema de fondo que D70, en otra capa.
 - **Bug real encontrado y corregido en el camino:** el HTML que genera
   markdown-it ya trae un `\n` real después de cada `<br>` — sin
@@ -984,7 +914,6 @@ en una misma fila flex con `align-items: baseline` + `flex-wrap` —
 con texto e íconos SVG mezclados, "baseline" da resultados impredecibles
 (los SVG no tienen línea de base de texto real), y el wrap reordenaba
 todo de forma distinta según el ancho disponible.**
-
 - Fix: se separó en dos niveles — `.site-header__row` (logo + lupa +
   luna, `align-items: center`, la lupa/luna empujadas a la derecha
   con el `margin-left: auto` ya existente) y la tagline como línea
@@ -999,7 +928,6 @@ todo de forma distinta según el ancho disponible.**
 plataforma (Spotify, Apple Music, etc.) en los pills, sin dibujar los
 logos nosotros mismos — son marcas registradas de terceros (mismo
 criterio que D42).**
-
 - Investigadas fuentes oficiales: Spotify tiene un hub de brand
   guidelines para developers/partners
   (developer.spotify.com/documentation/design); Apple Music tiene un
@@ -1028,3 +956,16 @@ criterio que D42).**
   página `/streaming/` (que además dejó de mostrar la clave cruda del
   JSON —`appleMusic`— y ahora usa el nombre auto-detectado, igual
   que el resto del sitio).
+
+## POST-LANZAMIENTO — Streaming: de pills a lista de texto grande
+
+**D74. La página `/streaming/` dejó de usar pills con botón/ícono/flecha
+— ahora es una lista vertical de links de texto plano, con el mismo
+font/tamaño que el título "Streaming" (`--font-display`, `--text-2xl`),
+pero en `--color-text` (negro en modo claro, blanco en modo oscuro por
+el sistema de tokens ya existente) en vez del rojo de acento.**
+- Se agregó un `:hover` a rojo, no pedido explícitamente — feedback de
+  que el texto es clickeable. Reversible si no gusta.
+- Esto es independiente de D73 (íconos oficiales de plataforma): esa
+  estructura sigue lista para las tarjetas/pills de contenido, solo se
+  sacó de esta página puntual.
