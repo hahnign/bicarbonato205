@@ -90,16 +90,33 @@ Si conseguís los badges oficiales de cada plataforma (Spotify y Apple
 Music tienen generadores oficiales — ver `docs/DECISIONS.md` para los
 links), subilos a `src/assets/img/platforms/` con este nombre exacto:
 
-| Plataforma  | Nombre de archivo             |
-|-------------|--------------------------------|
-| Spotify     | `spotify.svg` (o `.png`)      |
-| Apple Music | `apple-music.svg` (o `.png`)  |
-| YouTube     | `youtube.svg` (o `.png`)      |
-| Deezer      | `deezer.svg` (o `.png`)       |
-| SoundCloud  | `soundcloud.svg` (o `.png`)   |
-| Bandcamp    | `bandcamp.svg` (o `.png`)     |
+| Plataforma  | Nombre de archivo            |
+| ----------- | ---------------------------- |
+| Spotify     | `spotify.svg` (o `.png`)     |
+| Apple Music | `apple-music.svg` (o `.png`) |
+| YouTube     | `youtube.svg` (o `.png`)     |
+| Deezer      | `deezer.svg` (o `.png`)      |
+| SoundCloud  | `soundcloud.svg` (o `.png`)  |
+| Bandcamp    | `bandcamp.svg` (o `.png`)    |
 
 No hace falta tocar ningún template — apenas el archivo con ese
 nombre exacto exista, el ícono aparece solo (en la Fase de Streaming
 y en las pills de las tarjetas) la próxima vez que corras
 `npm run build`.
+
+---
+
+## Escribir texto largo en `_data/site.json`
+
+A diferencia de los archivos `.md` de `src/temas/`, `_data/site.json`
+es JSON puro — **no admite saltos de línea reales dentro de un
+string**, tenés que escribirlos como `\n` (barra invertida + n). Para
+un párrafo nuevo (con espacio visible entre medio), usá `\n\n`.
+
+```json
+"bio": "Primer párrafo.\n\nSegundo párrafo, separado por un espacio."
+```
+
+Si pegás texto con saltos de línea reales (copiado de un documento,
+por ejemplo) vas a tener un error de sintaxis — reemplazá cada salto
+de línea por `\n` a mano, o pedime que lo haga por vos.
