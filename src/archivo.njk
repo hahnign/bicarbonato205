@@ -12,8 +12,8 @@ permalink: /archivo/
 
 {% set porAño = collections.archivo | groupByYear %}
 {% for grupo in porAño %}
-  <section class="page-section">
-    <h2 class="page-section__heading">{{ grupo.year }} <span class="card__meta">({{ grupo.items.length }} publicaciones)</span></h2>
+  <details class="archivo-year" {% if loop.first %}open{% endif %}>
+    <summary class="archivo-year__summary">{{ grupo.year }} <span class="card__meta">({{ grupo.items.length }} publicaciones)</span></summary>
     <div class="card-grid">
       {% for item in grupo.items %}
         {% if "tema" in item.data.tags %}
@@ -25,5 +25,5 @@ permalink: /archivo/
         {% endif %}
       {% endfor %}
     </div>
-  </section>
+  </details>
 {% endfor %}

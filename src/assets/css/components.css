@@ -490,6 +490,7 @@
   color: var(--color-text-muted);
   max-width: 65ch;
   line-height: 1.6;
+  white-space: pre-line;
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -502,4 +503,66 @@
 @media (max-width: 480px) {
   .card-grid { grid-template-columns: 1fr; }
   .site-nav { gap: var(--space-4); }
+}
+
+/* ---------- ARCHIVO: bloques desplegables por año ---------- */
+
+.archivo-year {
+  padding: var(--space-6);
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.archivo-year__summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
+  padding: var(--space-2) 0;
+}
+
+.archivo-year[open] .archivo-year__summary {
+  margin-bottom: var(--space-6);
+}
+
+/* ---------- REPRODUCTOR DE PLAYLIST (solo en el hero de Inicio) ---------- */
+
+.hero-columns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.hero-player {
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.hero-bio {
+  max-width: 560px;
+}
+
+@media (min-width: 1024px) {
+  .hero-columns {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .hero-player {
+    flex: 0 0 560px;
+  }
+
+  .hero-bio {
+    flex: 1;
+  }
+}
+
+.hero-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }

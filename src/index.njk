@@ -12,6 +12,23 @@ title: Inicio
       <p class="brand-quote">{{ site.footerQuote }}</p>
     </div>
   </div>
+
+  {% if site.featuredPlaylistId %}
+    <div class="hero-columns">
+      <div class="hero-player">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/videoseries?list={{ site.featuredPlaylistId }}"
+          title="Playlist destacada de {{ site.name }}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="hero-bio">
+        <p class="page-text">{{ site.bioIntro }}</p>
+      </div>
+    </div>
+  {% endif %}
 </section>
 
 <section class="page-section">
