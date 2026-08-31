@@ -1104,3 +1104,29 @@ diferencia de Markdown.**
 - Documentado en `docs/PLANTILLAS.md`: la regla de saltos de línea en
   `_data/site.json` es distinta a la de los `.md` de `src/temas/`
   (breaks:true no aplica ahí, porque no es contenido Markdown).
+
+## POST-LANZAMIENTO — Renombres de secciones + íconos sociales en el header
+
+**D79. Renombres de texto visible (nav, títulos h1, subtítulos),
+manteniendo las URLs sin cambiar:**
+
+- "Archivo" → "Publicaciones" (nav + h1 + front matter `title`; URL
+  sigue siendo `/archivo/`).
+- "Acerca" → "Nosotros" (ídem; URL sigue siendo `/acerca/`).
+- Subtítulos actualizados en Playlists, Streaming y Temas al texto
+  provisto por el usuario.
+- Decisión explícita: no tocar las URLs sin que se pida — cambiarlas
+  rompería el sitemap y cualquier link externo ya compartido; se
+  avisó al usuario que es un cambio aparte si lo quiere.
+
+**D80. Tres íconos sociales nuevos en el header (Instagram, Facebook,
+YouTube), mismo estilo que la lupa/luna existentes (SVG lineales,
+`currentColor`, se adaptan solos a modo claro/oscuro).**
+
+- Mismo criterio que D42/D73: no son los logos oficiales exactos de
+  cada marca (son propiedad de terceros) — se usaron los íconos
+  genéricos del set Feather Icons (licencia MIT, libre), que ya
+  comparten el mismo lenguaje visual que los íconos propios del sitio.
+- Los links salen de datos ya existentes (`site.social.instagram`,
+  `site.social.facebook`, `site.streaming.youtube`) — no se agregó
+  ningún campo nuevo a `site.json`.
