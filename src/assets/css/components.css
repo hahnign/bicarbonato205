@@ -70,6 +70,16 @@
   padding: var(--space-1);
 }
 
+.site-header__social {
+  display: flex;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+}
+
+.site-header__social:hover {
+  color: var(--color-accent);
+}
+
 .site-nav {
   display: flex;
   flex-wrap: wrap;
