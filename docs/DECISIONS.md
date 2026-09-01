@@ -1130,3 +1130,57 @@ YouTube), mismo estilo que la lupa/luna existentes (SVG lineales,
 - Los links salen de datos ya existentes (`site.social.instagram`,
   `site.social.facebook`, `site.streaming.youtube`) — no se agregó
   ningún campo nuevo a `site.json`.
+
+## POST-LANZAMIENTO — URLs nuevas: /publicaciones/ y /nosotros/
+
+**D81. Permalinks cambiados: `/archivo/` → `/publicaciones/`,
+`/acerca/` → `/nosotros/` (a pedido explícito del usuario, tras el
+renombre de texto D79). Actualizado en `archivo.njk`, `acerca.njk`,
+`nav.njk` y `sitemap.njk`.**
+
+**D82. Se agregaron páginas de redirección automática en las URLs
+viejas** (`redirect-publicaciones.njk` en `/archivo/`,
+`redirect-nosotros.njk` en `/acerca/`, ambas con
+`eleventyExcludeFromCollections: true`) — no pedido explícitamente,
+agregado como buena práctica de bajo costo: evita que un link
+compartido o guardado antes del rename dé 404.
+
+**Bug real encontrado y corregido en el camino: doble `pathPrefix`
+(`/bicarbonato205/bicarbonato205/...`) en las páginas de redirección.**
+
+- Causa: se usó el filtro `{{ ... | url }}` a mano en el `<a href>` y
+  en el `<meta http-equiv="refresh" content="url=...">` — pero la
+  transformación automática de Eleventy que corrige `pathPrefix`
+  _también_ reescribe esos dos casos por su cuenta (confirmado
+  empíricamente: el `<a href>` normal ya lo cubre solo, igual que en
+  el resto del sitio, Y — hallazgo nuevo — el `content` de un
+  `meta[http-equiv=refresh]` también, algo que no estaba documentado
+  de las correcciones anteriores de `pathPrefix`, D37).
+- Fix: se sacó el filtro `| url` de ambos lugares, dejando que la
+  transformación automática los prefije una sola vez — mismo patrón
+  que ya usa el resto del sitio para `href`/`src` normales.
+- El `<link rel="canonical">` no tuvo este problema porque se
+  construye con `site.url` (dominio completo) + concatenación directa,
+  no con el filtro `url`, y no es un path que empiece con `/` (es una
+  URL absoluta) — la transformación automática no lo toca.
+
+## POST-LANZAMIENTO — URLs de Archivo y Acerca renombradas
+
+**D81. `/archivo/` → `/publicaciones/`, `/acerca/` → `/nosotros/` —
+esta vez sí, a pedido explícito del usuario (D79 había dejado las URLs
+sin tocar deliberadamente).**
+
+- Archivos renombrados para que coincidan: `archivo.njk` →
+  `publicaciones.njk`, `acerca.njk` → `nosotros.njk` (además del
+  `permalink` en el front matter, que es lo que realmente determina la
+  URL de salida).
+- Se verificó con `grep` en todo `src/`, `.eleventy.js`, `README.md` y
+  `docs/` que no quedara ninguna referencia residual a las rutas
+  viejas antes de dar el cambio por terminado — se encontraron y
+  corrigieron las 4 referencias reales: `nav.njk`, `sitemap.njk`, y
+  los dos archivos renombrados.
+- **Pendiente señalado al usuario, no resuelto por decisión propia:**
+  no se agregaron redirecciones de las URLs viejas (`/archivo/`,
+  `/acerca/`) a las nuevas — si esas rutas ya estaban compartidas o
+  indexadas, van a devolver 404 a partir de este cambio. Se ofreció
+  agregar redirecciones como capa extra si el usuario las quiere.

@@ -2,7 +2,7 @@
 title: "El Espejo de Midas"
 date: 2022-08-22
 type: single
-cover: "https://i.ytimg.com/vi/NYda0O6bsls/maxresdefault.jpg"
+cover: "https://i.ytimg.com/vi/NYda0O6bsls/hqdefault.jpg"
 streamingUrl: "https://open.spotify.com/intl-es/track/6YYrchwdv1bD4ZoMcBJXV6?si=9873840c971c40ad"
 links:
   - "https://music.apple.com/es/album/el-espejo-de-midas-single/1691056689"
