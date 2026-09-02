@@ -1184,3 +1184,27 @@ sin tocar deliberadamente).**
   `/acerca/`) a las nuevas — si esas rutas ya estaban compartidas o
   indexadas, van a devolver 404 a partir de este cambio. Se ofreció
   agregar redirecciones como capa extra si el usuario las quiere.
+
+## POST-LANZAMIENTO — Fallback automático de miniatura en el script
+
+**D82. El script de automatización (`npm run new`) ahora verifica el
+tamaño real del archivo `maxresdefault.jpg` antes de usarlo, y cae a
+`hqdefault.jpg` si no existe.**
+
+- Causa del bug real reportado por el usuario: YouTube no devuelve 404
+  cuando `maxresdefault` no existe para un video — devuelve un
+  placeholder gris minúsculo con estado HTTP 200, indistinguible de
+  una respuesta válida si solo se chequea `res.ok`. Hay que comparar
+  el tamaño real del archivo (header `content-length`): el placeholder
+  pesa unos pocos cientos de bytes, una miniatura real pesa muchísimo
+  más — se usó un umbral de 2000 bytes.
+- Nueva función `getBestThumbnail(videoId)`, con petición `HEAD` (no
+  descarga el archivo completo, solo sus headers) para no gastar ancho
+  de banda de más en la verificación.
+- Verificado con un test que simula ambas situaciones (`fetch`
+  mockeado, ya que el sandbox de esta conversación no tiene salida de
+  red hacia `i.ytimg.com`) — no se pudo probar contra la red real de
+  YouTube en este entorno.
+- Alcance del fix: solo aplica a contenido nuevo cargado con
+  `npm run new` de acá en adelante — no corrige retroactivamente
+  ningún `cover` ya guardado a mano con `maxresdefault` roto.
