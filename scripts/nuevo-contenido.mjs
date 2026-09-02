@@ -37,19 +37,36 @@ function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
+async function getBestThumbnail(videoId) {
+  const maxres = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+  const fallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  try {
+    const res = await fetch(maxres, { method: "HEAD" });
+    const size = parseInt(res.headers.get("content-length") || "0", 10);
+    // YouTube NO devuelve 404 cuando maxresdefault no existe — devuelve
+    // un placeholder gris minúsculo con estado 200, como si fuera válido.
+    // Por eso no alcanza con chequear res.ok: hay que mirar el tamaño real
+    // del archivo. El placeholder pesa unos pocos cientos de bytes; una
+    // miniatura real pesa muchísimo más.
+    if (res.ok && size > 2000) {
+      return maxres;
+    }
+  } catch {
+    // sin conexión o error de red: seguimos al fallback
+  }
+  return fallback;
+}
+
 async function fetchYoutubeMeta(url) {
   try {
     const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
     if (!res.ok) return null;
     const data = await res.json();
-    // La miniatura de oEmbed viene en baja resolución (hqdefault);
-    // maxresdefault es la versión grande, coherente con el resto del
-    // sitio (usada en el primer lanzamiento real, Poco Tiempo).
     const videoId = new URL(url).searchParams.get("v")
       || url.split("/").pop().split("?")[0];
     return {
       title: data.title,
-      cover: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+      cover: await getBestThumbnail(videoId),
     };
   } catch {
     return null;
