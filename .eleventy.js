@@ -77,6 +77,22 @@ module.exports = function (eleventyConfig) {
   });
 
   /* ------------------------------------------------------------
+     COLECCIÓN CUSTOM: inicio
+     Combina Temas + Noticias (NO Playlists, a pedido explícito del
+     usuario) ordenados por fecha descendente — usada solo por la
+     página de Inicio. Distinta de "archivo" (que sigue incluyendo
+     Playlists, usada por RSS/sitemap/búsqueda, donde sí tiene
+     sentido que aparezca todo el contenido del sitio).
+     ------------------------------------------------------------ */
+  eleventyConfig.addCollection("inicio", (collectionApi) => {
+    const items = [
+      ...collectionApi.getFilteredByTag("tema"),
+      ...collectionApi.getFilteredByTag("noticia"),
+    ];
+    return items.sort((a, b) => b.date - a.date);
+  });
+
+  /* ------------------------------------------------------------
      FILTRO: limit
      Corta un array a los primeros N elementos.
      Uso: {{ collections.tema | reverse | limit(4) }}
@@ -122,6 +138,7 @@ module.exports = function (eleventyConfig) {
      Uso: {% set porAño = collections.archivo | groupByYear %}
      ------------------------------------------------------------ */
   eleventyConfig.addFilter("groupByYear", (collection) => {
+    if (!collection || !collection.length) return [];
     const groups = {};
     collection.forEach((item) => {
       const year = item.date.getFullYear();

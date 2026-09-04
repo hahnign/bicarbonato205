@@ -1208,3 +1208,38 @@ tamaño real del archivo `maxresdefault.jpg` antes de usarlo, y cae a
 - Alcance del fix: solo aplica a contenido nuevo cargado con
   `npm run new` de acá en adelante — no corrige retroactivamente
   ningún `cover` ya guardado a mano con `maxresdefault` roto.
+
+## POST-LANZAMIENTO — Publicaciones solo Noticias, Inicio combina Temas+Noticias
+
+**D83. Reestructuración de contenido: cada tipo tiene su página
+exclusiva. Publicaciones dejó de ser el timeline combinado de
+todo (tema+playlist+noticia) — ahora muestra SOLO Noticias/Historias.
+Playlists confirmado explícitamente por el usuario como excluido de
+Publicaciones e Inicio (solo vive en `/playlists/`).**
+
+- Nueva colección custom `inicio` en `.eleventy.js`: combina Temas +
+  Noticias (sin Playlists) ordenados por fecha — distinta de
+  `archivo` (que sigue combinando las tres, usada por RSS/sitemap/
+  búsqueda, donde sí corresponde cubrir todo el contenido del sitio
+  independientemente de cómo se organicen las páginas visuales).
+- Noticia ahora usa el mismo formato de tarjeta que Tema: imagen
+  `cover` opcional (campo nuevo en el modelo de datos), sin link
+  interno a su propia página de detalle (mismo criterio de D46 para
+  Temas) — el detalle de noticia sigue existiendo como página real
+  (SEO/sitemap/RSS/búsqueda), solo se sacó del flujo de navegación
+  de la tarjeta.
+- **Bug real encontrado durante esta implementación:** el filtro
+  `groupByYear` no era defensivo ante una colección vacía/inexistente
+  (`collections.noticia` no existe todavía como colección de Eleventy,
+  porque no hay ningún contenido real con ese tag) — tiraba
+  `Cannot read properties of undefined`. Se corrigió devolviendo un
+  array vacío si la colección no existe, tratando "sin contenido
+  todavía" como estado válido, no como error.
+- **Segundo bug real encontrado al reconstruir:** aparecieron
+  `acerca.njk` y `archivo.njk` viejos conviviendo con
+  `nosotros.njk`/`publicaciones.njk`, ambos con permalinks apuntando a
+  las URLs nuevas — duplicado que rompía el build
+  (`DuplicatePermalinkOutputError`). Se eliminaron los dos archivos
+  viejos; se conservaron `redirect-nosotros.njk` y
+  `redirect-publicaciones.njk` (las redirecciones reales de las URLs
+  viejas, que sí están bien implementadas).

@@ -58,7 +58,7 @@ Descripción corta (opcional).
 
 ---
 
-## Noticia breve
+## Noticia breve (aparece en Publicaciones)
 
 Archivo: `src/noticias/NOMBRE-DEL-ARCHIVO.md`
 
@@ -66,10 +66,16 @@ Archivo: `src/noticias/NOMBRE-DEL-ARCHIVO.md`
 ---
 title: "Título de la noticia"
 date: 2024-01-01
+cover: "https://URL-DE-LA-IMAGEN.jpg"
 ---
 
 Texto de la noticia.
 ```
+
+`cover` es opcional — mismo formato de tarjeta que Temas (imagen
+16:9, texto con botón "Más" si no entra). Si no tenés imagen para
+esta noticia puntual, borrá el campo `cover` entero, la tarjeta se
+muestra igual, sin imagen.
 
 ---
 
@@ -90,14 +96,14 @@ Si conseguís los badges oficiales de cada plataforma (Spotify y Apple
 Music tienen generadores oficiales — ver `docs/DECISIONS.md` para los
 links), subilos a `src/assets/img/platforms/` con este nombre exacto:
 
-| Plataforma  | Nombre de archivo            |
-| ----------- | ---------------------------- |
-| Spotify     | `spotify.svg` (o `.png`)     |
-| Apple Music | `apple-music.svg` (o `.png`) |
-| YouTube     | `youtube.svg` (o `.png`)     |
-| Deezer      | `deezer.svg` (o `.png`)      |
-| SoundCloud  | `soundcloud.svg` (o `.png`)  |
-| Bandcamp    | `bandcamp.svg` (o `.png`)    |
+| Plataforma  | Nombre de archivo             |
+|-------------|--------------------------------|
+| Spotify     | `spotify.svg` (o `.png`)      |
+| Apple Music | `apple-music.svg` (o `.png`)  |
+| YouTube     | `youtube.svg` (o `.png`)      |
+| Deezer      | `deezer.svg` (o `.png`)       |
+| SoundCloud  | `soundcloud.svg` (o `.png`)   |
+| Bandcamp    | `bandcamp.svg` (o `.png`)     |
 
 No hace falta tocar ningún template — apenas el archivo con ese
 nombre exacto exista, el ícono aparece solo (en la Fase de Streaming

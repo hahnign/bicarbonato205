@@ -25,7 +25,7 @@ title: Inicio
         </iframe>
       </div>
       <div class="hero-bio">
-        <p class="page-text">{{ site.bioIntro }}</p>
+        <p class="page-text">{{ site.bio }}</p>
       </div>
     </div>
   {% endif %}
@@ -34,8 +34,12 @@ title: Inicio
 <section class="page-section">
   <h2 class="page-section__heading">Novedades</h2>
   <div class="card-grid">
-    {% for tema in collections.tema | reverse %}
-      {{ card(tema.data.title, tema.data.date | formatDate, tema.templateContent, "Tema", "card__tag--tema", tema.data.cover, tema.data | collectLinks) }}
+    {% for item in collections.inicio %}
+      {% if "tema" in item.data.tags %}
+        {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Tema", "card__tag--tema", item.data.cover, item.data | collectLinks) }}
+      {% elif "noticia" in item.data.tags %}
+        {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Noticia", "card__tag--noticia", item.data.cover, []) }}
+      {% endif %}
     {% endfor %}
   </div>
 </section>

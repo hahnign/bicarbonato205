@@ -7,22 +7,16 @@ permalink: /publicaciones/
 
 <section class="page-hero">
   <h1 class="page-hero__title">Publicaciones</h1>
-  <p class="card__meta">Todo lo publicado, agrupado por año.</p>
+  <p class="card__meta">Historias y noticias, agrupadas por año.</p>
 </section>
 
-{% set porAño = collections.archivo | groupByYear %}
+{% set porAño = collections.noticia | groupByYear %}
 {% for grupo in porAño %}
   <details class="archivo-year" {% if loop.first %}open{% endif %}>
     <summary class="archivo-year__summary">{{ grupo.year }} <span class="card__meta">({{ grupo.items.length }} publicaciones)</span></summary>
     <div class="card-grid">
       {% for item in grupo.items %}
-        {% if "tema" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Tema", "card__tag--tema", item.data.cover, item.data | collectLinks) }}
-        {% elif "playlist" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Playlist", "card__tag--playlist", null, item.data | collectLinks) }}
-        {% elif "noticia" in item.data.tags %}
-          {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Noticia", "card__tag--noticia", null, [], item.url) }}
-        {% endif %}
+        {{ card(item.data.title, item.data.date | formatDate, item.templateContent, "Noticia", "card__tag--noticia", item.data.cover, []) }}
       {% endfor %}
     </div>
   </details>
